@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Lesson Creation Studio | 45-Minute Pedagogical Synthesizer & Dual QC</title>
+  <title>Neural AI | AI Lesson Creation & Dual QC Studio</title>
   
   <!-- Inter & JetBrains Mono Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   
   <!-- Tailwind CSS & FontAwesome -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -38,11 +38,13 @@
               950: '#3b0764',
             },
             dark: {
-              bg: '#090514',         /* Deep Obsidian Black-Purple */
-              card: '#130c24',       /* Deep Blackish-Purple Container */
-              cardHover: '#1c1236',  /* Rich Plum Hover */
-              border: '#2a1a47',     /* Subtle Purple Border */
-              muted: '#a998cb',      /* Muted Lavender */
+              void: '#040108',       /* Pitch Black-Purple Void */
+              bg: '#07020f',         /* Deepest Obsidian Base */
+              card: '#0f071e',       /* Dark Translucent Card */
+              cardHover: '#170c2e',  /* Hover Elevation */
+              border: '#2a1645',     /* Subtle Purple Border */
+              borderBright: '#6b21a8',/* Highlight Purple Border */
+              muted: '#9ca3af',      /* Crisp Muted Gray-Lavender */
             }
           }
         }
@@ -54,47 +56,80 @@
     /* Custom Scrollbar in Dark Purple */
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: #321d54; border-radius: 9999px; }
-    ::-webkit-scrollbar-thumb:hover { background: #4c2882; }
+    ::-webkit-scrollbar-thumb { background: #321652; border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: #581c87; }
 
-    /* Glassmorphism with Black-Purple Tint */
-    .glass-panel {
-      background: rgba(19, 12, 36, 0.85);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border: 1px solid rgba(168, 85, 247, 0.16);
-    }
-    .light .glass-panel {
-      background: rgba(250, 245, 255, 0.92);
-      border: 1px solid rgba(147, 51, 234, 0.18);
+    /* Fine Coordinate Grid Background matching Neural AI theme */
+    .neural-grid-bg {
+      background-color: #05020a;
+      background-image: 
+        linear-gradient(to right, rgba(168, 85, 247, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(168, 85, 247, 0.05) 1px, transparent 1px);
+      background-size: 38px 38px;
     }
 
-    /* Ambient Deep Purple Glows */
-    .ambient-glow {
+    /* Ambient Radial Purple Glow Spotlight */
+    .spotlight-glow {
       position: absolute;
-      width: 520px;
-      height: 520px;
+      width: 750px;
+      height: 750px;
       border-radius: 50%;
-      filter: blur(150px);
+      background: radial-gradient(circle, rgba(147, 51, 234, 0.16) 0%, rgba(126, 34, 206, 0.06) 45%, rgba(5, 2, 10, 0) 75%);
       pointer-events: none;
       z-index: 0;
-      opacity: 0.18;
     }
 
-    /* Active Tab in Blackish-Purple */
+    /* Glassmorphism Panel */
+    .glass-panel {
+      background: rgba(14, 7, 28, 0.78);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(168, 85, 247, 0.16);
+    }
+    .glass-panel:hover {
+      border-color: rgba(168, 85, 247, 0.32);
+    }
+
+    /* Primary Glowing Pill Button */
+    .btn-pill-primary {
+      background-color: #9333ea;
+      color: #ffffff;
+      box-shadow: 0 0 25px rgba(147, 51, 234, 0.52), 0 0 50px rgba(147, 51, 234, 0.22);
+      transition: all 0.22s ease-in-out;
+    }
+    .btn-pill-primary:hover {
+      background-color: #a855f7;
+      box-shadow: 0 0 35px rgba(168, 85, 247, 0.75), 0 0 65px rgba(147, 51, 234, 0.35);
+      transform: translateY(-1px);
+    }
+
+    /* Secondary Outlined Pill Button */
+    .btn-pill-secondary {
+      background: rgba(18, 9, 36, 0.5);
+      border: 1px solid rgba(168, 85, 247, 0.35);
+      color: #f3f4f6;
+      transition: all 0.22s ease-in-out;
+    }
+    .btn-pill-secondary:hover {
+      border-color: rgba(192, 132, 252, 0.8);
+      background: rgba(147, 51, 234, 0.16);
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+
+    /* Active Navigation Tab */
     .tab-btn.active {
-      color: #d8b4fe;
+      color: #ffffff;
       border-bottom: 2px solid #a855f7;
-      background: rgba(168, 85, 247, 0.12);
+      background: rgba(168, 85, 247, 0.14);
     }
   </style>
 </head>
-<body class="bg-dark-bg text-purple-50 min-h-screen flex flex-col font-sans transition-colors duration-200 relative overflow-x-hidden">
+<body class="neural-grid-bg text-gray-100 min-h-screen flex flex-col font-sans transition-colors duration-200 relative overflow-x-hidden selection:bg-purple-600 selection:text-white">
 
-  <!-- Ambient Background Glows in Deep Purple -->
-  <div class="ambient-glow bg-purple-900 -top-32 -left-32"></div>
-  <div class="ambient-glow bg-violet-900 top-1/3 -right-32"></div>
-  <div class="ambient-glow bg-purple-950 -bottom-32 left-1/3"></div>
+  <!-- Ambient Purple Spotlights -->
+  <div class="spotlight-glow top-0 left-1/4 -translate-x-1/2 -translate-y-1/4"></div>
+  <div class="spotlight-glow top-1/2 right-0 translate-x-1/3 opacity-70"></div>
 
   <!-- Header / Navigation Bar -->
   <header class="glass-panel sticky top-0 z-40 border-b border-dark-border">
@@ -102,22 +137,22 @@
       
       <!-- Brand & Product Title -->
       <div class="flex items-center space-x-3.5">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-800 via-brand-600 to-purple-400 flex items-center justify-center text-white shadow-lg shadow-purple-950/60 ring-1 ring-purple-400/30">
-          <i class="fa-solid fa-graduation-cap text-lg"></i>
+        <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-purple-800 to-purple-500 flex items-center justify-center text-white shadow-[0_0_18px_rgba(147,51,234,0.6)] ring-1 ring-purple-300/40">
+          <i class="fa-solid fa-brain text-sm"></i>
         </div>
         <div>
           <div class="flex items-center gap-2">
-            <span class="text-base font-extrabold tracking-tight bg-gradient-to-r from-purple-100 via-purple-200 to-purple-400 bg-clip-text text-transparent">AI Lesson Studio</span>
-            <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-purple-950 text-purple-300 border border-purple-700/40 font-semibold">45-MIN PRO</span>
+            <span class="text-base font-extrabold tracking-tight text-white">Neural <span class="bg-gradient-to-r from-white via-purple-200 to-purple-400 bg-clip-text text-transparent">AI</span></span>
+            <span class="text-[10px] font-mono px-2.5 py-0.5 rounded-full bg-purple-950/80 text-purple-300 border border-purple-700/50 font-semibold tracking-wider">LESSON ENGINE</span>
           </div>
-          <p class="text-[11px] text-dark-muted font-medium">Curriculum Research Synthesizer & Dual QC Engine</p>
+          <p class="text-[11px] text-dark-muted font-medium">45-Minute Curriculum Synthesis & Dual QC</p>
         </div>
       </div>
 
       <!-- Quick Switcher, Stats & Actions -->
       <div class="flex items-center space-x-3">
         <!-- Live Backend Status Pill -->
-        <div id="connection-pill" class="hidden sm:flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono bg-purple-950/80 text-purple-300 border border-purple-700/50">
+        <div id="connection-pill" class="hidden sm:flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-mono bg-purple-950/60 text-purple-300 border border-purple-800/60">
           <span class="relative flex h-2 w-2">
             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
             <span class="relative inline-flex rounded-full h-2 w-2 bg-purple-500"></span>
@@ -125,13 +160,8 @@
           <span class="font-semibold">FastAPI Live</span>
         </div>
 
-        <!-- Theme Toggle -->
-        <button onclick="toggleTheme()" class="w-9 h-9 rounded-xl border border-dark-border bg-dark-card hover:bg-dark-cardHover flex items-center justify-center text-dark-muted hover:text-purple-200 transition">
-          <i id="theme-icon" class="fa-solid fa-moon"></i>
-        </button>
-
-        <!-- New Lesson Button -->
-        <button onclick="openCreateModal()" class="bg-gradient-to-r from-purple-700 to-violet-600 hover:from-purple-600 hover:to-violet-500 text-white text-xs font-semibold px-4 py-2 rounded-xl transition shadow-md shadow-purple-950/50 flex items-center gap-2 ring-1 ring-purple-400/20">
+        <!-- New Lesson Pill Button -->
+        <button onclick="openCreateModal()" class="btn-pill-primary px-5 py-2 rounded-full text-xs font-semibold flex items-center gap-2">
           <i class="fa-solid fa-plus text-xs"></i> New Lesson Draft
         </button>
       </div>
@@ -139,11 +169,38 @@
     </div>
   </header>
 
+  <!-- Hero Section echoing the Neural AI reference design -->
+  <section class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-6">
+    <div class="max-w-3xl">
+      <h1 class="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white mb-3">
+        Neural <span class="bg-gradient-to-r from-white via-purple-200 to-purple-400 bg-clip-text text-transparent">AI</span>
+      </h1>
+      <h2 class="text-xl sm:text-2xl font-bold text-white tracking-tight mb-3">
+        Understanding what signals reveal.
+      </h2>
+      <p class="text-dark-muted text-sm sm:text-base leading-relaxed mb-6 font-normal">
+        Exploring how specialised learned models can interpret curriculum signals, synthesize authoritative standards and textbooks into a strictly paced 45-minute lesson, and validate pedagogical integrity through dual independent quality control layers.
+      </p>
+
+      <div class="flex flex-wrap items-center gap-4">
+        <button onclick="openCreateModal()" class="btn-pill-primary px-7 py-3 rounded-full text-sm font-semibold flex items-center gap-2.5">
+          <span>Explore the Research</span>
+          <i class="fa-solid fa-arrow-right text-xs"></i>
+        </button>
+
+        <button onclick="switchTab('tab-research')" class="btn-pill-secondary px-7 py-3 rounded-full text-sm font-semibold flex items-center gap-2.5">
+          <span>Research Approach</span>
+          <i class="fa-solid fa-arrow-down-right text-xs"></i>
+        </button>
+      </div>
+    </div>
+  </section>
+
   <!-- Main Content Area -->
-  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 z-10 space-y-6">
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-4 z-10 space-y-6">
 
     <!-- Active Lesson Dashboard Card -->
-    <div class="glass-panel rounded-2xl p-5 border border-dark-border shadow-xl">
+    <div class="glass-panel rounded-2xl p-5 border border-dark-border shadow-2xl">
       <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
         
         <!-- Lesson Dropdown & Meta -->
@@ -152,10 +209,10 @@
             <i class="fa-solid fa-folder-open text-purple-400"></i> Active Curriculum Workspace:
           </div>
           <div class="flex flex-wrap items-center gap-3">
-            <select id="lesson-select" onchange="loadSelectedLesson()" class="bg-dark-card text-purple-100 text-sm font-semibold rounded-xl border border-dark-border px-3.5 py-2 min-w-[280px] sm:min-w-[340px] focus:ring-2 focus:ring-purple-500 focus:outline-none shadow-inner">
+            <select id="lesson-select" onchange="loadSelectedLesson()" class="bg-dark-card text-purple-100 text-sm font-semibold rounded-full border border-dark-border px-4 py-2 min-w-[280px] sm:min-w-[340px] focus:ring-2 focus:ring-purple-500 focus:outline-none shadow-inner">
               <option value="">Loading lessons...</option>
             </select>
-            <button onclick="fetchLessons()" title="Reload lessons" class="p-2 text-dark-muted hover:text-purple-200 bg-dark-card hover:bg-dark-cardHover rounded-xl border border-dark-border transition">
+            <button onclick="fetchLessons()" title="Reload lessons" class="p-2 text-dark-muted hover:text-purple-200 bg-dark-card hover:bg-dark-cardHover rounded-full border border-dark-border transition">
               <i class="fa-solid fa-arrows-rotate"></i>
             </button>
           </div>
@@ -163,26 +220,26 @@
 
         <!-- Badges & Duration Status -->
         <div class="flex flex-wrap items-center gap-2.5 text-xs">
-          <div id="badge-status" class="px-3 py-1.5 rounded-lg bg-purple-950 text-purple-300 border border-purple-800/50 font-mono font-semibold flex items-center gap-1.5">
+          <div id="badge-status" class="px-3.5 py-1.5 rounded-full bg-purple-950/70 text-purple-300 border border-purple-800/60 font-mono font-semibold flex items-center gap-1.5">
             <i class="fa-solid fa-circle-notch fa-spin text-[10px]"></i> STATUS: DRAFT
           </div>
-          <div id="badge-version" class="px-3 py-1.5 rounded-lg bg-purple-950/60 text-purple-300 border border-purple-800/40 font-mono font-semibold">
+          <div id="badge-version" class="px-3.5 py-1.5 rounded-full bg-purple-950/50 text-purple-300 border border-purple-800/50 font-mono font-semibold">
             VERSION: v1
           </div>
-          <div class="px-3 py-1.5 rounded-lg bg-purple-900/40 text-purple-200 border border-purple-700/40 font-semibold flex items-center gap-1.5">
+          <div class="px-3.5 py-1.5 rounded-full bg-purple-900/40 text-purple-200 border border-purple-700/50 font-semibold flex items-center gap-1.5">
             <i class="fa-regular fa-clock text-purple-400"></i> 45-Minute Budget
           </div>
         </div>
 
       </div>
 
-      <!-- 6-Stage Visual Pipeline Stepper in Blackish-Purple -->
+      <!-- 6-Stage Visual Pipeline Stepper -->
       <div class="mt-6 pt-5 border-t border-dark-border">
         <div class="text-[11px] font-bold uppercase tracking-wider text-dark-muted mb-3 flex items-center gap-1.5">
           <i class="fa-solid fa-bars-staggered text-purple-400"></i> Autonomous Pipeline Progress
         </div>
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 text-xs">
-          <div id="step-intake" class="p-2.5 rounded-xl border border-purple-600/40 bg-purple-950/40 text-purple-200 flex items-center gap-2">
+          <div id="step-intake" class="p-2.5 rounded-xl border border-purple-600/50 bg-purple-950/50 text-purple-200 flex items-center gap-2">
             <i class="fa-solid fa-circle-check text-purple-400"></i>
             <span class="font-medium truncate">1. Intake</span>
           </div>
@@ -220,7 +277,7 @@
         
         <!-- Multi-tone Purple Duration Track -->
         <div class="w-full h-3 rounded-full bg-dark-bg border border-dark-border flex overflow-hidden p-0.5 gap-0.5 shadow-inner">
-          <div id="bar-intro" class="bg-purple-900 h-full rounded-sm transition-all" style="width: 6.6%;" title="Introduction (3m)"></div>
+          <div id="bar-intro" class="bg-purple-950 h-full rounded-sm transition-all" style="width: 6.6%;" title="Introduction (3m)"></div>
           <div id="bar-core" class="bg-purple-800 h-full rounded-sm transition-all" style="width: 26.6%;" title="Core Explanations (12m)"></div>
           <div id="bar-examples" class="bg-purple-700 h-full rounded-sm transition-all" style="width: 17.7%;" title="Worked Examples (8m)"></div>
           <div id="bar-app" class="bg-purple-600 h-full rounded-sm transition-all" style="width: 15.5%;" title="Practical Application (7m)"></div>
@@ -230,7 +287,7 @@
         </div>
         
         <div class="flex flex-wrap justify-between text-[10px] text-dark-muted font-mono mt-1.5">
-          <span><span class="inline-block w-2 h-2 rounded-full bg-purple-900 mr-1"></span>Intro 3m</span>
+          <span><span class="inline-block w-2 h-2 rounded-full bg-purple-950 mr-1"></span>Intro 3m</span>
           <span><span class="inline-block w-2 h-2 rounded-full bg-purple-800 mr-1"></span>Concepts 12m</span>
           <span><span class="inline-block w-2 h-2 rounded-full bg-purple-700 mr-1"></span>Examples 8m</span>
           <span><span class="inline-block w-2 h-2 rounded-full bg-purple-600 mr-1"></span>Application 7m</span>
@@ -242,24 +299,24 @@
     </div>
 
     <!-- Workspace Tabs Navigation -->
-    <div class="glass-panel rounded-2xl border border-dark-border shadow-xl overflow-hidden">
-      <div class="border-b border-dark-border bg-dark-card/50 px-3 sm:px-6 flex overflow-x-auto text-sm font-medium">
-        <button onclick="switchTab('tab-research')" id="btn-tab-research" class="tab-btn active py-4 px-3 sm:px-5 flex items-center gap-2.5 transition border-b-2 border-transparent text-dark-muted hover:text-purple-200">
+    <div class="glass-panel rounded-2xl border border-dark-border shadow-2xl overflow-hidden">
+      <div class="border-b border-dark-border bg-dark-card/60 px-3 sm:px-6 flex overflow-x-auto text-sm font-medium">
+        <button onclick="switchTab('tab-research')" id="btn-tab-research" class="tab-btn active py-4 px-3 sm:px-5 flex items-center gap-2.5 transition border-b-2 border-transparent text-dark-muted hover:text-white">
           <i class="fa-solid fa-magnifying-glass text-purple-400"></i>
           <span>1. Research Vault</span>
           <span id="tab-source-badge" class="ml-1 text-[10px] font-mono px-2 py-0.5 rounded-full bg-purple-900/60 text-purple-300 font-bold border border-purple-800/40">0</span>
         </button>
-        <button onclick="switchTab('tab-editor')" id="btn-tab-editor" class="tab-btn py-4 px-3 sm:px-5 flex items-center gap-2.5 transition border-b-2 border-transparent text-dark-muted hover:text-purple-200">
+        <button onclick="switchTab('tab-editor')" id="btn-tab-editor" class="tab-btn py-4 px-3 sm:px-5 flex items-center gap-2.5 transition border-b-2 border-transparent text-dark-muted hover:text-white">
           <i class="fa-solid fa-pen-to-square text-purple-400"></i>
           <span>2. Lesson Studio</span>
           <span id="tab-version-badge" class="ml-1 text-[10px] font-mono px-2 py-0.5 rounded-full bg-purple-900/60 text-purple-300 font-bold border border-purple-800/40">v1</span>
         </button>
-        <button onclick="switchTab('tab-qc')" id="btn-tab-qc" class="tab-btn py-4 px-3 sm:px-5 flex items-center gap-2.5 transition border-b-2 border-transparent text-dark-muted hover:text-purple-200">
+        <button onclick="switchTab('tab-qc')" id="btn-tab-qc" class="tab-btn py-4 px-3 sm:px-5 flex items-center gap-2.5 transition border-b-2 border-transparent text-dark-muted hover:text-white">
           <i class="fa-solid fa-shield-halved text-purple-400"></i>
           <span>3. Dual QC Audit</span>
           <span id="tab-qc-badge" class="ml-1 text-[10px] font-mono px-2 py-0.5 rounded-full bg-purple-900/60 text-purple-300 font-bold border border-purple-800/40">Ready</span>
         </button>
-        <button onclick="switchTab('tab-preview')" id="btn-tab-preview" class="tab-btn py-4 px-3 sm:px-5 flex items-center gap-2.5 transition border-b-2 border-transparent text-dark-muted hover:text-purple-200">
+        <button onclick="switchTab('tab-preview')" id="btn-tab-preview" class="tab-btn py-4 px-3 sm:px-5 flex items-center gap-2.5 transition border-b-2 border-transparent text-dark-muted hover:text-white">
           <i class="fa-solid fa-file-export text-purple-400"></i>
           <span>4. Preview & Export</span>
         </button>
@@ -272,7 +329,7 @@
         <div id="tab-research" class="space-y-6">
           
           <!-- Research Actions Bar -->
-          <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-dark-card p-4 rounded-xl border border-dark-border">
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-dark-card/90 p-4 rounded-2xl border border-dark-border">
             <div>
               <h2 class="text-sm font-bold text-white flex items-center gap-2">
                 <i class="fa-solid fa-database text-purple-400"></i> Multi-Source Research Engine
@@ -281,15 +338,15 @@
             </div>
             
             <div class="flex flex-wrap gap-2.5">
-              <button onclick="runWebResearch()" id="btn-run-research" class="bg-gradient-to-r from-purple-700 to-violet-600 hover:from-purple-600 hover:to-violet-500 text-white text-xs font-semibold px-4 py-2 rounded-xl transition flex items-center gap-2 shadow-md shadow-purple-950/60 border border-purple-500/30">
+              <button onclick="runWebResearch()" id="btn-run-research" class="btn-pill-primary px-5 py-2 rounded-full text-xs font-semibold flex items-center gap-2">
                 <i class="fa-solid fa-globe"></i> Run Web Research
               </button>
               
-              <button onclick="runYouTubeResearch()" class="bg-purple-950/70 hover:bg-purple-900/80 text-purple-200 text-xs font-semibold px-4 py-2 rounded-xl transition flex items-center gap-2 border border-purple-800/50">
+              <button onclick="runYouTubeResearch()" class="btn-pill-secondary px-5 py-2 rounded-full text-xs font-semibold flex items-center gap-2">
                 <i class="fa-brands fa-youtube text-purple-400"></i> Discover YouTube
               </button>
               
-              <label class="bg-purple-950/70 hover:bg-purple-900/80 text-purple-200 text-xs font-semibold px-4 py-2 rounded-xl transition flex items-center gap-2 border border-purple-800/50 cursor-pointer">
+              <label class="btn-pill-secondary px-5 py-2 rounded-full text-xs font-semibold flex items-center gap-2 cursor-pointer">
                 <i class="fa-solid fa-file-pdf text-purple-400"></i> Upload Book PDF (PyMuPDF)
                 <input type="file" id="pdf-file-input" accept=".pdf" class="hidden" onchange="uploadBookPdf(event)">
               </label>
@@ -310,22 +367,22 @@
         <div id="tab-editor" class="space-y-6 hidden">
           
           <!-- Studio Header Bar -->
-          <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-dark-card p-4 rounded-xl border border-dark-border">
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-dark-card/90 p-4 rounded-2xl border border-dark-border">
             <div>
               <h2 class="text-sm font-bold text-white flex items-center gap-2" id="editor-lesson-title">Lesson Title</h2>
               <p class="text-xs text-dark-muted mt-0.5 line-clamp-1" id="editor-lesson-objective">Objective: ...</p>
             </div>
             
             <div class="flex flex-wrap items-center gap-3">
-              <div id="time-checker-pill" class="text-xs font-mono px-3 py-1.5 rounded-xl bg-purple-950/80 text-purple-300 border border-purple-800/50 font-bold flex items-center gap-2">
+              <div id="time-checker-pill" class="text-xs font-mono px-3.5 py-1.5 rounded-full bg-purple-950/80 text-purple-300 border border-purple-800/60 font-bold flex items-center gap-2">
                 <i class="fa-regular fa-clock text-purple-400"></i> <span id="editor-total-duration">45</span> / 45 Minutes
               </div>
 
-              <button onclick="triggerGenerateLesson()" id="btn-generate" class="bg-gradient-to-r from-purple-700 to-violet-600 hover:from-purple-600 hover:to-violet-500 text-white text-xs font-semibold px-4 py-2 rounded-xl transition flex items-center gap-2 shadow-md shadow-purple-950/60 border border-purple-500/30">
+              <button onclick="triggerGenerateLesson()" id="btn-generate" class="btn-pill-primary px-5 py-2 rounded-full text-xs font-semibold flex items-center gap-2">
                 <i class="fa-solid fa-wand-magic-sparkles"></i> Synthesize / Regenerate
               </button>
 
-              <button onclick="saveManualEdits()" class="bg-purple-950/70 hover:bg-purple-900/80 text-purple-200 text-xs font-semibold px-4 py-2 rounded-xl transition flex items-center gap-2 border border-purple-800/50">
+              <button onclick="saveManualEdits()" class="btn-pill-secondary px-5 py-2 rounded-full text-xs font-semibold flex items-center gap-2">
                 <i class="fa-solid fa-floppy-disk text-purple-400"></i> Save Edits (New Version)
               </button>
             </div>
@@ -345,7 +402,7 @@
         <div id="tab-qc" class="space-y-6 hidden">
           
           <!-- QC Controls Bar -->
-          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-dark-card p-4 rounded-xl border border-dark-border">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-dark-card/90 p-4 rounded-2xl border border-dark-border">
             <div>
               <h2 class="text-sm font-bold text-white flex items-center gap-2">
                 <i class="fa-solid fa-scale-balanced text-purple-400"></i> Independent Quality Control (QC) Studio
@@ -353,12 +410,12 @@
               <p class="text-xs text-dark-muted mt-0.5">QC Layer 1 audits Factual Accuracy; QC Layer 2 audits Instructional Pedagogy.</p>
             </div>
             
-            <div class="flex gap-2.5">
-              <button onclick="runQCAudit()" id="btn-run-qc" class="bg-gradient-to-r from-purple-700 to-violet-600 hover:from-purple-600 hover:to-violet-500 text-white text-xs font-semibold px-4 py-2 rounded-xl transition flex items-center gap-2 shadow-md shadow-purple-950/60 border border-purple-500/30">
+            <div class="flex flex-wrap gap-2.5">
+              <button onclick="runQCAudit()" id="btn-run-qc" class="btn-pill-primary px-5 py-2 rounded-full text-xs font-semibold flex items-center gap-2">
                 <i class="fa-solid fa-shield-virus"></i> Run Both QC Layers
               </button>
 
-              <button onclick="applySelectedQCRecommendations()" id="btn-apply-rec" class="bg-purple-950/70 hover:bg-purple-900/80 text-purple-200 text-xs font-semibold px-4 py-2 rounded-xl transition flex items-center gap-2 border border-purple-800/50">
+              <button onclick="applySelectedQCRecommendations()" id="btn-apply-rec" class="btn-pill-secondary px-5 py-2 rounded-full text-xs font-semibold flex items-center gap-2">
                 <i class="fa-solid fa-check-double text-purple-400"></i> Apply Selected Fixes
               </button>
             </div>
@@ -368,10 +425,10 @@
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
             <!-- QC LAYER 1: FACTUAL ACCURACY -->
-            <div class="bg-dark-card rounded-2xl p-5 border border-dark-border shadow-lg space-y-4">
+            <div class="bg-dark-card rounded-2xl p-5 border border-dark-border shadow-xl space-y-4">
               <div class="flex justify-between items-center border-b border-dark-border pb-4">
                 <div class="flex items-center gap-3">
-                  <div class="w-10 h-10 rounded-xl bg-purple-950 border border-purple-800/50 text-purple-400 flex items-center justify-center text-lg">
+                  <div class="w-10 h-10 rounded-full bg-purple-950/80 border border-purple-800/60 text-purple-400 flex items-center justify-center text-lg">
                     <i class="fa-solid fa-flask-vial"></i>
                   </div>
                   <div>
@@ -381,7 +438,7 @@
                 </div>
 
                 <div class="text-right">
-                  <span id="qc1-status-pill" class="text-xs px-2.5 py-1 rounded-lg font-mono font-bold bg-purple-950 text-purple-300 border border-purple-800/50">PENDING</span>
+                  <span id="qc1-status-pill" class="text-xs px-3 py-1 rounded-full font-mono font-bold bg-purple-950 text-purple-300 border border-purple-800/50">PENDING</span>
                   <div id="qc1-score" class="text-xs font-mono text-purple-400 mt-1 font-bold">- / 100</div>
                 </div>
               </div>
@@ -403,10 +460,10 @@
             </div>
 
             <!-- QC LAYER 2: INSTRUCTIONAL QUALITY -->
-            <div class="bg-dark-card rounded-2xl p-5 border border-dark-border shadow-lg space-y-4">
+            <div class="bg-dark-card rounded-2xl p-5 border border-dark-border shadow-xl space-y-4">
               <div class="flex justify-between items-center border-b border-dark-border pb-4">
                 <div class="flex items-center gap-3">
-                  <div class="w-10 h-10 rounded-xl bg-purple-950 border border-purple-800/50 text-purple-400 flex items-center justify-center text-lg">
+                  <div class="w-10 h-10 rounded-full bg-purple-950/80 border border-purple-800/60 text-purple-400 flex items-center justify-center text-lg">
                     <i class="fa-solid fa-chalkboard-user"></i>
                   </div>
                   <div>
@@ -416,7 +473,7 @@
                 </div>
 
                 <div class="text-right">
-                  <span id="qc2-status-pill" class="text-xs px-2.5 py-1 rounded-lg font-mono font-bold bg-purple-950 text-purple-300 border border-purple-800/50">PENDING</span>
+                  <span id="qc2-status-pill" class="text-xs px-3 py-1 rounded-full font-mono font-bold bg-purple-950 text-purple-300 border border-purple-800/50">PENDING</span>
                   <div id="qc2-score" class="text-xs font-mono text-purple-400 mt-1 font-bold">- / 100</div>
                 </div>
               </div>
@@ -442,7 +499,7 @@
 
         <!-- ==================== TAB 4: PREVIEW & EXPORT ==================== -->
         <div id="tab-preview" class="space-y-6 hidden">
-          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-dark-card p-4 rounded-xl border border-dark-border">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-dark-card/90 p-4 rounded-2xl border border-dark-border">
             <div>
               <h2 class="text-sm font-bold text-white flex items-center gap-2">
                 <i class="fa-solid fa-file-lines text-purple-400"></i> Finalized Lesson & Audit Package Preview
@@ -451,14 +508,14 @@
             </div>
             
             <div class="flex gap-2.5">
-              <button onclick="downloadExportMarkdown()" class="bg-gradient-to-r from-purple-700 to-violet-600 hover:from-purple-600 hover:to-violet-500 text-white text-xs font-semibold px-4 py-2 rounded-xl transition flex items-center gap-2 shadow-md shadow-purple-950/60 border border-purple-500/30">
+              <button onclick="downloadExportMarkdown()" class="btn-pill-primary px-5 py-2 rounded-full text-xs font-semibold flex items-center gap-2">
                 <i class="fa-solid fa-download"></i> Download Export (.md)
               </button>
             </div>
           </div>
 
-          <div class="bg-dark-card p-6 sm:p-8 rounded-2xl border border-dark-border shadow-xl">
-            <div id="preview-container" class="space-y-6 text-purple-100 text-sm leading-relaxed">
+          <div class="bg-dark-card p-6 sm:p-8 rounded-2xl border border-dark-border shadow-2xl">
+            <div id="preview-container" class="space-y-6 text-gray-200 text-sm leading-relaxed">
               <p class="text-dark-muted text-center py-10">Select a generated lesson to preview.</p>
             </div>
           </div>
@@ -468,12 +525,12 @@
     </div>
   </main>
 
-  <!-- Create Lesson Modal in Blackish-Purple -->
-  <div id="create-modal" class="fixed inset-0 bg-black/75 backdrop-blur-md z-50 flex items-center justify-center hidden p-4">
+  <!-- Create Lesson Modal -->
+  <div id="create-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center hidden p-4">
     <div class="bg-dark-card rounded-2xl shadow-2xl max-w-lg w-full p-6 border border-dark-border relative">
       <div class="flex justify-between items-center pb-3.5 border-b border-dark-border">
         <div class="flex items-center gap-2.5">
-          <div class="w-8 h-8 rounded-lg bg-purple-950 text-purple-400 flex items-center justify-center font-bold border border-purple-800/50">
+          <div class="w-8 h-8 rounded-full bg-purple-950 text-purple-400 flex items-center justify-center font-bold border border-purple-800/50">
             <i class="fa-solid fa-plus text-xs"></i>
           </div>
           <h3 class="text-sm font-bold text-white">Create New Curriculum Draft</h3>
@@ -515,8 +572,8 @@
         <div id="create-error-msg" class="text-xs text-purple-400 hidden font-medium"></div>
 
         <div class="flex justify-end gap-2.5 pt-2">
-          <button type="button" onclick="closeCreateModal()" class="px-4 py-2 text-xs font-medium text-dark-muted hover:text-white transition">Cancel</button>
-          <button type="submit" id="btn-submit-create" class="px-5 py-2 text-xs font-semibold bg-gradient-to-r from-purple-700 to-violet-600 hover:from-purple-600 hover:to-violet-500 text-white rounded-xl transition shadow-md shadow-purple-950/60 border border-purple-500/30">
+          <button type="button" onclick="closeCreateModal()" class="px-5 py-2.5 text-xs font-medium text-dark-muted hover:text-white transition">Cancel</button>
+          <button type="submit" id="btn-submit-create" class="btn-pill-primary px-6 py-2.5 rounded-full text-xs font-semibold">
             Create Lesson Draft
           </button>
         </div>
@@ -524,8 +581,8 @@
     </div>
   </div>
 
-  <!-- Notification Toast in Blackish-Purple -->
-  <div id="toast" class="fixed bottom-6 right-6 max-w-sm bg-dark-card border border-purple-800/50 text-purple-100 px-4 py-3 rounded-xl shadow-2xl text-xs z-50 transition transform translate-y-24 opacity-0 flex items-center gap-3">
+  <!-- Notification Toast -->
+  <div id="toast" class="fixed bottom-6 right-6 max-w-sm bg-dark-card border border-purple-800/70 text-purple-100 px-4 py-3 rounded-2xl shadow-2xl text-xs z-50 transition transform translate-y-24 opacity-0 flex items-center gap-3">
     <i id="toast-icon" class="fa-solid fa-circle-info text-purple-400 text-base"></i>
     <span id="toast-text" class="font-medium">Notification message</span>
   </div>
@@ -536,20 +593,6 @@
     let currentLessonId = null;
     let currentLessonData = null;
     let allQCIssues = [];
-
-    // Dark/Light Theme Handler
-    function toggleTheme() {
-      const html = document.documentElement;
-      const isDark = html.classList.toggle('dark');
-      const icon = document.getElementById('theme-icon');
-      if (isDark) {
-        icon.className = 'fa-solid fa-moon';
-        localStorage.setItem('theme', 'dark');
-      } else {
-        icon.className = 'fa-solid fa-sun';
-        localStorage.setItem('theme', 'light');
-      }
-    }
 
     function showToast(msg, type = "info") {
       const toast = document.getElementById("toast");
@@ -654,7 +697,7 @@
           el.className = 'p-2.5 rounded-xl border border-purple-600/40 bg-purple-950/40 text-purple-200 flex items-center gap-2';
           el.querySelector('i').className = 'fa-solid fa-circle-check text-purple-400';
         } else if (idx === activeIdx - 1) {
-          el.className = 'p-2.5 rounded-xl border border-purple-400/50 bg-gradient-to-r from-purple-800 to-violet-700 text-white font-bold flex items-center gap-2 shadow-lg shadow-purple-950/50';
+          el.className = 'p-2.5 rounded-xl border border-purple-400/50 bg-gradient-to-r from-purple-800 to-purple-600 text-white font-bold flex items-center gap-2 shadow-lg shadow-purple-950/50';
           el.querySelector('i').className = 'fa-solid fa-circle-notch fa-spin text-purple-200';
         } else {
           el.className = 'p-2.5 rounded-xl border border-dark-border bg-dark-card text-dark-muted flex items-center gap-2';
@@ -692,10 +735,10 @@
           `).join("");
 
           return `
-            <div class="bg-dark-card p-4 rounded-xl border border-dark-border shadow-md hover:border-purple-800/60 transition">
+            <div class="bg-dark-card p-4 rounded-xl border border-dark-border shadow-md hover:border-purple-700/60 transition">
               <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-2">
                 <div class="flex items-center gap-3">
-                  <div class="w-8 h-8 rounded-lg bg-dark-bg border border-purple-800/40 flex items-center justify-center">
+                  <div class="w-8 h-8 rounded-full bg-dark-bg border border-purple-800/40 flex items-center justify-center">
                     <i class="fa-solid ${icon}"></i>
                   </div>
                   <div>
@@ -704,8 +747,8 @@
                   </div>
                 </div>
                 <div class="flex items-center gap-2">
-                  <span class="text-[11px] px-2.5 py-0.5 rounded-md bg-dark-bg text-dark-muted font-mono border border-dark-border">${tier}</span>
-                  <span class="text-xs px-2.5 py-0.5 rounded-md font-mono font-bold bg-purple-950 text-purple-300 border border-purple-800/50">
+                  <span class="text-[11px] px-2.5 py-0.5 rounded-full bg-dark-bg text-dark-muted font-mono border border-dark-border">${tier}</span>
+                  <span class="text-xs px-2.5 py-0.5 rounded-full font-mono font-bold bg-purple-950 text-purple-300 border border-purple-800/50">
                     ${scorePercent}% Relevance
                   </span>
                 </div>
@@ -821,11 +864,11 @@
       countSpan.innerText = fullTotal;
 
       if (fullTotal === 45) {
-        pill.className = "text-xs font-mono px-3 py-1.5 rounded-xl bg-purple-950/80 text-purple-300 border border-purple-800/50 font-bold flex items-center gap-2";
+        pill.className = "text-xs font-mono px-3.5 py-1.5 rounded-full bg-purple-950/80 text-purple-300 border border-purple-800/60 font-bold flex items-center gap-2";
         document.getElementById("pacing-track-sum").innerText = "45 / 45 Minutes Allocated (100% Balanced)";
         document.getElementById("pacing-track-sum").className = "font-mono font-bold text-purple-300";
       } else {
-        pill.className = "text-xs font-mono px-3 py-1.5 rounded-xl bg-purple-900 text-purple-100 border border-purple-500 font-bold flex items-center gap-2";
+        pill.className = "text-xs font-mono px-3.5 py-1.5 rounded-full bg-purple-900 text-purple-100 border border-purple-500 font-bold flex items-center gap-2";
         document.getElementById("pacing-track-sum").innerText = `${fullTotal} / 45 Minutes (Pacing Mismatch)`;
         document.getElementById("pacing-track-sum").className = "font-mono font-bold text-purple-400";
       }
@@ -893,7 +936,7 @@
           const rep = data.factual_qc.report;
           const statusPill = document.getElementById("qc1-status-pill");
           statusPill.innerText = rep.status.toUpperCase();
-          statusPill.className = "text-xs px-2.5 py-1 rounded-lg font-mono font-bold bg-purple-950 text-purple-300 border border-purple-800/50";
+          statusPill.className = "text-xs px-3 py-1 rounded-full font-mono font-bold bg-purple-950 text-purple-300 border border-purple-800/60";
           document.getElementById("qc1-score").innerText = `${rep.overall_score} / 100`;
           document.getElementById("qc1-summary-box").innerText = rep.summary;
 
@@ -908,13 +951,13 @@
               return `
                 <div class="p-3.5 rounded-xl border border-purple-700/50 bg-purple-950/70 space-y-2 text-xs">
                   <div class="flex justify-between items-center">
-                    <span class="px-2 py-0.5 rounded font-bold uppercase font-mono text-[10px] bg-purple-900 text-purple-200 border border-purple-700/60">${iss.severity}</span>
+                    <span class="px-2.5 py-0.5 rounded-full font-bold uppercase font-mono text-[10px] bg-purple-900 text-purple-200 border border-purple-700/60">${iss.severity}</span>
                     <label class="flex items-center gap-1.5 text-purple-200 cursor-pointer font-semibold">
                       <input type="checkbox" value="${iss.issue_id}" class="qc-fix-checkbox rounded text-purple-600 focus:ring-purple-500"> Select to Fix
                     </label>
                   </div>
                   <p class="font-bold text-white">${iss.explanation}</p>
-                  ${iss.evidence_considered ? `<div class="p-2 rounded bg-dark-bg/80 text-purple-200 font-mono text-[11px] border border-dark-border"><span class="text-purple-400 font-bold">Evidence:</span> ${iss.evidence_considered}</div>` : ''}
+                  ${iss.evidence_considered ? `<div class="p-2 rounded-lg bg-dark-bg/80 text-purple-200 font-mono text-[11px] border border-dark-border"><span class="text-purple-400 font-bold">Evidence:</span> ${iss.evidence_considered}</div>` : ''}
                   <p class="text-purple-300 font-medium"><span class="text-white font-bold">Correction:</span> ${iss.recommendation}</p>
                 </div>
               `;
@@ -927,7 +970,7 @@
           const rep = data.instructional_qc.report;
           const statusPill = document.getElementById("qc2-status-pill");
           statusPill.innerText = rep.status.toUpperCase();
-          statusPill.className = "text-xs px-2.5 py-1 rounded-lg font-mono font-bold bg-purple-950 text-purple-300 border border-purple-800/50";
+          statusPill.className = "text-xs px-3 py-1 rounded-full font-mono font-bold bg-purple-950 text-purple-300 border border-purple-800/60";
           document.getElementById("qc2-score").innerText = `${rep.overall_score} / 100`;
           document.getElementById("qc2-summary-box").innerText = rep.summary;
 
@@ -942,7 +985,7 @@
               return `
                 <div class="p-3.5 rounded-xl border border-purple-700/50 bg-purple-950/70 space-y-2 text-xs">
                   <div class="flex justify-between items-center">
-                    <span class="px-2 py-0.5 rounded font-bold uppercase font-mono text-[10px] bg-purple-900 text-purple-200 border border-purple-700/60">${iss.severity}</span>
+                    <span class="px-2.5 py-0.5 rounded-full font-bold uppercase font-mono text-[10px] bg-purple-900 text-purple-200 border border-purple-700/60">${iss.severity}</span>
                     <label class="flex items-center gap-1.5 text-purple-200 cursor-pointer font-semibold">
                       <input type="checkbox" value="${iss.issue_id}" class="qc-fix-checkbox rounded text-purple-600 focus:ring-purple-500"> Select to Fix
                     </label>
@@ -1012,13 +1055,13 @@
 
         container.innerHTML = `
           <div class="border-b border-dark-border pb-5 mb-6">
-            <h1 class="text-2xl font-extrabold text-white tracking-tight">${c.title}</h1>
+            <h1 class="text-3xl font-extrabold text-white tracking-tight">${c.title}</h1>
             <div class="flex flex-wrap gap-2 text-xs text-dark-muted mt-2">
-              <span class="px-2.5 py-0.5 rounded bg-dark-bg border border-dark-border font-mono text-purple-300">Duration: ${c.total_duration_minutes} Mins</span>
-              <span class="px-2.5 py-0.5 rounded bg-dark-bg border border-dark-border font-mono text-purple-300">Version: v${data.version_number}</span>
-              <span class="px-2.5 py-0.5 rounded bg-dark-bg border border-dark-border font-mono text-purple-300">Audience: ${c.target_audience}</span>
+              <span class="px-3 py-1 rounded-full bg-dark-bg border border-dark-border font-mono text-purple-300">Duration: ${c.total_duration_minutes} Mins</span>
+              <span class="px-3 py-1 rounded-full bg-dark-bg border border-dark-border font-mono text-purple-300">Version: v${data.version_number}</span>
+              <span class="px-3 py-1 rounded-full bg-dark-bg border border-dark-border font-mono text-purple-300">Audience: ${c.target_audience}</span>
             </div>
-            <div class="mt-4 text-xs font-medium text-purple-100 bg-purple-950/60 border border-purple-800/50 p-3.5 rounded-xl leading-relaxed">
+            <div class="mt-4 text-xs font-medium text-purple-100 bg-purple-950/60 border border-purple-800/60 p-4 rounded-xl leading-relaxed">
               <strong class="text-purple-300">Learning Objective:</strong> ${c.learning_objective}
             </div>
           </div>
@@ -1030,15 +1073,15 @@
                 <div class="p-4 rounded-xl border border-dark-border bg-dark-bg space-y-1.5">
                   <div class="flex justify-between items-center font-bold text-xs text-white">
                     <span>${s.title}</span>
-                    <span class="font-mono text-purple-300 bg-purple-950 px-2 py-0.5 rounded border border-purple-800/50">${s.duration_minutes} min</span>
+                    <span class="font-mono text-purple-300 bg-purple-950 px-2.5 py-0.5 rounded-full border border-purple-800/50">${s.duration_minutes} min</span>
                   </div>
-                  <p class="text-xs text-purple-200 leading-relaxed">${s.content}</p>
+                  <p class="text-xs text-gray-300 leading-relaxed">${s.content}</p>
                 </div>
               `).join("")}
             </div>
 
             <h3 class="text-xs font-bold uppercase tracking-wider text-dark-muted mt-6">Interactive Learner Task</h3>
-            <div class="p-4 bg-purple-950/50 border border-purple-800/40 rounded-xl text-xs space-y-1.5">
+            <div class="p-4 bg-purple-950/50 border border-purple-800/50 rounded-xl text-xs space-y-1.5">
               <h4 class="font-bold text-purple-200 text-sm">${c.interactive_activity.title} (${c.interactive_activity.duration_minutes} mins)</h4>
               <p class="text-purple-100">${c.interactive_activity.instructions}</p>
               <div class="pt-1 text-purple-300 font-semibold font-mono"><i class="fa-solid fa-flag-checkered mr-1 text-purple-400"></i> Deliverable: ${c.interactive_activity.deliverable}</div>
@@ -1049,7 +1092,7 @@
               ${c.knowledge_checks.map((q, idx) => `
                 <div class="p-4 border border-dark-border rounded-xl text-xs bg-dark-bg space-y-2">
                   <p class="font-bold text-white">Q${idx+1}: ${q.question}</p>
-                  <p class="text-purple-300 font-semibold font-mono bg-purple-950/80 p-2 rounded border border-purple-800/50">Answer: ${q.correct_answer}</p>
+                  <p class="text-purple-300 font-semibold font-mono bg-purple-950/80 p-2 rounded-lg border border-purple-800/50">Answer: ${q.correct_answer}</p>
                   <p class="text-dark-muted italic">${q.explanation}</p>
                 </div>
               `).join("")}
@@ -1058,7 +1101,7 @@
             <h3 class="text-xs font-bold uppercase tracking-wider text-dark-muted mt-6">Bibliographic Standards</h3>
             <div class="space-y-1.5 text-xs">
               ${c.references.map(r => `
-                <div class="p-2.5 rounded-lg bg-dark-bg border border-dark-border flex justify-between items-center">
+                <div class="p-3 rounded-xl bg-dark-bg border border-dark-border flex justify-between items-center">
                   <div>
                     <span class="font-mono font-bold text-purple-400">[${r.source_id}]</span>
                     <span class="font-semibold text-white ml-1">${r.title}</span>
@@ -1124,11 +1167,6 @@
     // Initialize on load
     window.addEventListener("DOMContentLoaded", () => {
       fetchLessons();
-      const savedTheme = localStorage.getItem('theme');
-      if (savedTheme === 'light') {
-        document.documentElement.classList.remove('dark');
-        document.getElementById('theme-icon').className = 'fa-solid fa-sun';
-      }
     });
   </script>
 </body>
