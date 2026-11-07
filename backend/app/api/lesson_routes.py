@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 
 from app.core.database import get_db
 from app.models.lesson import Lesson, LessonVersion
+from app.models.source import ResearchSource
 from app.schemas.lesson import (
     LessonCreateRequest,
     LessonUpdateRequest,
@@ -134,12 +135,26 @@ def generate_lesson_content(lesson_id: str, db: Session = Depends(get_db)):
     db.commit()
 
     try:
+        # Load any researched sources for grounded generation
+        sources = db.query(ResearchSource).filter(ResearchSource.lesson_id == lesson_id, ResearchSource.status == "active").all()
+        sources_payload = [
+            {
+                "id": s.id,
+                "title": s.title,
+                "author_publisher": s.author_publisher,
+                "url_or_identifier": s.url_or_identifier,
+                "source_type": s.source_type,
+            }
+            for s in sources
+        ]
+
         content: LessonContent = llm_service.generate_basic_lesson(
             title=lesson.title,
             learning_objective=lesson.learning_objective,
             audience=lesson.audience or "General / Undergraduate",
             teaching_mode=lesson.teaching_mode or "self-learning",
             additional_instructions=lesson.additional_instructions,
+            research_sources=sources_payload if sources_payload else None,
         )
 
         # Calculate next version number

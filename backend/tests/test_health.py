@@ -9,5 +9,5 @@ def test_health_check(client):
 def test_root_endpoint(client):
     response = client.get("/")
     assert response.status_code == 200
-    data = response.json()
-    assert "AI-Powered Lesson Creation API" in data["message"]
+    # Returns HTML dashboard or JSON API info
+    assert "AI Lesson Creation" in response.text or "AI-Powered Lesson Creation" in response.text
