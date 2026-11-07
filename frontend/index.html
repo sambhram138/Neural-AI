@@ -1,214 +1,442 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI-Powered Lesson Creation Tool</title>
+  <title>AI Lesson Creation Studio | 45-Minute Pedagogical Synthesizer & Dual QC</title>
+  
+  <!-- Inter & JetBrains Mono Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS & FontAwesome -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              400: '#818cf8',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+            },
+            dark: {
+              bg: '#0a0d14',
+              card: '#111520',
+              cardHover: '#161c2b',
+              border: '#1e2638',
+              muted: '#8e9bb0',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
   <style>
-    .tab-active { border-bottom: 2px solid #2563eb; color: #2563eb; font-weight: 600; }
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #2a3449; border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: #3b4965; }
+
+    /* Glassmorphism & Glow Effects */
+    .glass-panel {
+      background: rgba(17, 21, 32, 0.75);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .light .glass-panel {
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .ambient-glow {
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      filter: blur(140px);
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.15;
+    }
+
+    /* Active Tab Indicator */
+    .tab-btn.active {
+      color: #818cf8;
+      border-bottom: 2px solid #6366f1;
+      background: rgba(99, 102, 241, 0.08);
+    }
+    .light .tab-btn.active {
+      color: #4f46e5;
+      border-bottom: 2px solid #4f46e5;
+      background: rgba(79, 70, 229, 0.06);
+    }
+
+    /* Radial Progress Score Gauge */
+    .score-circle {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col font-sans">
+<body class="bg-dark-bg text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-200 relative overflow-x-hidden">
 
-  <!-- Header -->
-  <header class="bg-white border-b border-slate-200 sticky top-0 z-30">
+  <!-- Ambient Background Glows -->
+  <div class="ambient-glow bg-indigo-600 -top-32 -left-32"></div>
+  <div class="ambient-glow bg-cyan-600 top-1/3 -right-32"></div>
+  <div class="ambient-glow bg-purple-600 -bottom-32 left-1/3"></div>
+
+  <!-- Header / Navigation Bar -->
+  <header class="glass-panel sticky top-0 z-40 border-b border-dark-border/80">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
-      <div class="flex items-center space-x-3">
-        <div class="bg-blue-600 text-white p-2 rounded-lg text-lg">
-          <i class="fa-solid fa-graduation-cap"></i>
+      
+      <!-- Brand & Product Title -->
+      <div class="flex items-center space-x-3.5">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 via-indigo-500 to-cyan-400 flex items-center justify-center text-white shadow-lg shadow-indigo-500/25 ring-1 ring-white/20">
+          <i class="fa-solid fa-graduation-cap text-lg"></i>
         </div>
         <div>
-          <h1 class="text-lg font-bold text-slate-900 leading-tight">AI Lesson Creation Tool</h1>
-          <p class="text-xs text-slate-500">45-Minute Lesson Synthesizer & Dual-Layer QC</p>
+          <div class="flex items-center gap-2">
+            <span class="text-base font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">AI Lesson Studio</span>
+            <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-brand-500/10 text-brand-400 border border-brand-500/20 font-semibold">v1.2 PRO</span>
+          </div>
+          <p class="text-[11px] text-dark-muted font-medium">45-Minute Curriculum Synthesizer & Dual QC Engine</p>
         </div>
       </div>
+
+      <!-- Quick Switcher, Stats & Actions -->
       <div class="flex items-center space-x-3">
-        <span id="api-status-badge" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
-          <span class="w-1.5 h-1.5 mr-1.5 bg-emerald-500 rounded-full"></span> API Connected
-        </span>
-        <button onclick="openCreateModal()" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-3.5 py-2 rounded-lg transition shadow-sm flex items-center gap-1.5">
-          <i class="fa-solid fa-plus text-xs"></i> New Lesson
+        <!-- Live Backend Status Pill -->
+        <div id="connection-pill" class="hidden sm:flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+          </span>
+          <span class="font-semibold">FastAPI Live</span>
+        </div>
+
+        <!-- Theme Toggle -->
+        <button onclick="toggleTheme()" class="w-9 h-9 rounded-lg border border-dark-border bg-dark-card hover:bg-dark-cardHover flex items-center justify-center text-dark-muted hover:text-white transition">
+          <i id="theme-icon" class="fa-solid fa-moon"></i>
+        </button>
+
+        <!-- New Lesson Button -->
+        <button onclick="openCreateModal()" class="bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-500 hover:to-indigo-500 text-white text-xs font-semibold px-4 py-2 rounded-lg transition shadow-md shadow-indigo-600/20 flex items-center gap-2 ring-1 ring-white/10">
+          <i class="fa-solid fa-plus text-xs"></i> New Lesson Draft
         </button>
       </div>
+
     </div>
   </header>
 
-  <!-- Main Container -->
-  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
-    
-    <!-- Top Stats / Quick Switcher -->
-    <div class="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-      <div class="flex items-center gap-3">
-        <label for="lesson-select" class="text-sm font-medium text-slate-600">Active Lesson:</label>
-        <select id="lesson-select" onchange="loadSelectedLesson()" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2 min-w-[280px]">
-          <option value="">Loading lessons...</option>
-        </select>
-        <button onclick="fetchLessons()" title="Refresh" class="text-slate-500 hover:text-slate-800 p-2"><i class="fa-solid fa-arrows-rotate"></i></button>
+  <!-- Main Content Area -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 z-10 space-y-6">
+
+    <!-- Active Lesson Dashboard Card -->
+    <div class="glass-panel rounded-2xl p-5 border border-dark-border shadow-xl">
+      <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+        
+        <!-- Lesson Dropdown & Meta -->
+        <div class="space-y-1.5 w-full lg:w-auto">
+          <div class="flex items-center gap-2 text-xs text-dark-muted font-medium">
+            <i class="fa-solid fa-folder-open text-brand-400"></i> Active Curriculum Workspace:
+          </div>
+          <div class="flex flex-wrap items-center gap-3">
+            <select id="lesson-select" onchange="loadSelectedLesson()" class="bg-dark-card text-white text-sm font-semibold rounded-xl border border-dark-border px-3.5 py-2 min-w-[280px] sm:min-w-[340px] focus:ring-2 focus:ring-brand-500 focus:outline-none shadow-inner">
+              <option value="">Loading lessons...</option>
+            </select>
+            <button onclick="fetchLessons()" title="Reload lessons" class="p-2 text-dark-muted hover:text-white bg-dark-card hover:bg-dark-cardHover rounded-xl border border-dark-border transition">
+              <i class="fa-solid fa-arrows-rotate"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Badges & Duration Status -->
+        <div class="flex flex-wrap items-center gap-2.5 text-xs">
+          <div id="badge-status" class="px-3 py-1.5 rounded-lg bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 font-mono font-semibold flex items-center gap-1.5">
+            <i class="fa-solid fa-circle-notch fa-spin text-[10px]"></i> STATUS: DRAFT
+          </div>
+          <div id="badge-version" class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 border border-slate-700 font-mono font-semibold">
+            VERSION: v1
+          </div>
+          <div class="px-3 py-1.5 rounded-lg bg-amber-500/10 text-amber-300 border border-amber-500/20 font-semibold flex items-center gap-1.5">
+            <i class="fa-regular fa-clock text-amber-400"></i> 45-Minute Budget
+          </div>
+        </div>
+
       </div>
-      <div id="lesson-meta-badges" class="flex flex-wrap gap-2 text-xs">
-        <span class="px-2.5 py-1 rounded bg-slate-100 text-slate-700 font-mono" id="badge-status">Status: Draft</span>
-        <span class="px-2.5 py-1 rounded bg-blue-50 text-blue-700 font-medium" id="badge-version">Version: -</span>
-        <span class="px-2.5 py-1 rounded bg-amber-50 text-amber-700 font-medium" id="badge-duration"><i class="fa-regular fa-clock"></i> 45 Minutes Fixed</span>
+
+      <!-- 6-Stage Visual Pipeline Stepper -->
+      <div class="mt-6 pt-5 border-t border-dark-border/80">
+        <div class="text-[11px] font-bold uppercase tracking-wider text-dark-muted mb-3 flex items-center gap-1.5">
+          <i class="fa-solid fa-bars-staggered text-brand-400"></i> Autonomous Pipeline Progress
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 text-xs">
+          <div id="step-intake" class="p-2.5 rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-300 flex items-center gap-2">
+            <i class="fa-solid fa-circle-check text-emerald-400"></i>
+            <span class="font-medium truncate">1. Intake</span>
+          </div>
+          <div id="step-research" class="p-2.5 rounded-xl border border-dark-border bg-dark-card text-dark-muted flex items-center gap-2">
+            <i class="fa-solid fa-globe text-blue-400"></i>
+            <span class="font-medium truncate">2. Research</span>
+          </div>
+          <div id="step-synthesis" class="p-2.5 rounded-xl border border-dark-border bg-dark-card text-dark-muted flex items-center gap-2">
+            <i class="fa-solid fa-wand-magic-sparkles text-purple-400"></i>
+            <span class="font-medium truncate">3. 45m Synthesis</span>
+          </div>
+          <div id="step-qc1" class="p-2.5 rounded-xl border border-dark-border bg-dark-card text-dark-muted flex items-center gap-2">
+            <i class="fa-solid fa-flask text-cyan-400"></i>
+            <span class="font-medium truncate">4. QC 1: Factual</span>
+          </div>
+          <div id="step-qc2" class="p-2.5 rounded-xl border border-dark-border bg-dark-card text-dark-muted flex items-center gap-2">
+            <i class="fa-solid fa-chalkboard-user text-amber-400"></i>
+            <span class="font-medium truncate">5. QC 2: Pedagogy</span>
+          </div>
+          <div id="step-export" class="p-2.5 rounded-xl border border-dark-border bg-dark-card text-dark-muted flex items-center gap-2">
+            <i class="fa-solid fa-file-export text-emerald-400"></i>
+            <span class="font-medium truncate">6. Export Ready</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 45-Minute Visual Time Allocation Track -->
+      <div class="mt-5 pt-4 border-t border-dark-border/60">
+        <div class="flex justify-between items-center text-xs mb-2">
+          <span class="font-semibold text-slate-300 flex items-center gap-1.5">
+            <i class="fa-solid fa-chart-simple text-brand-400"></i> 45-Minute Teaching Budget Distribution
+          </span>
+          <span id="pacing-track-sum" class="font-mono font-bold text-emerald-400">45 / 45 Minutes Allocated (100%)</span>
+        </div>
+        <div class="w-full h-3 rounded-full bg-dark-card border border-dark-border flex overflow-hidden p-0.5 gap-0.5 shadow-inner">
+          <div id="bar-intro" class="bg-blue-500 h-full rounded-sm transition-all" style="width: 6.6%;" title="Introduction (3m)"></div>
+          <div id="bar-core" class="bg-indigo-500 h-full rounded-sm transition-all" style="width: 26.6%;" title="Core Explanations (12m)"></div>
+          <div id="bar-examples" class="bg-purple-500 h-full rounded-sm transition-all" style="width: 17.7%;" title="Worked Examples (8m)"></div>
+          <div id="bar-app" class="bg-cyan-500 h-full rounded-sm transition-all" style="width: 15.5%;" title="Practical Application (7m)"></div>
+          <div id="bar-activity" class="bg-amber-500 h-full rounded-sm transition-all" style="width: 11.1%;" title="Interactive Activity (5m)"></div>
+          <div id="bar-kc" class="bg-emerald-500 h-full rounded-sm transition-all" style="width: 15.5%;" title="Assessment Checks (7m)"></div>
+          <div id="bar-summary" class="bg-slate-400 h-full rounded-sm transition-all" style="width: 6.6%;" title="Summary (3m)"></div>
+        </div>
+        <div class="flex flex-wrap justify-between text-[10px] text-dark-muted font-mono mt-1.5">
+          <span><span class="inline-block w-2 h-2 rounded-full bg-blue-500 mr-1"></span>Intro 3m</span>
+          <span><span class="inline-block w-2 h-2 rounded-full bg-indigo-500 mr-1"></span>Concepts 12m</span>
+          <span><span class="inline-block w-2 h-2 rounded-full bg-purple-500 mr-1"></span>Examples 8m</span>
+          <span><span class="inline-block w-2 h-2 rounded-full bg-cyan-500 mr-1"></span>Application 7m</span>
+          <span><span class="inline-block w-2 h-2 rounded-full bg-amber-500 mr-1"></span>Activity 5m</span>
+          <span><span class="inline-block w-2 h-2 rounded-full bg-emerald-500 mr-1"></span>Assessment 7m</span>
+          <span><span class="inline-block w-2 h-2 rounded-full bg-slate-400 mr-1"></span>Summary 3m</span>
+        </div>
       </div>
     </div>
 
-    <!-- Workspace Tabs -->
-    <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden mb-8">
-      <div class="border-b border-slate-200 bg-slate-50/50 px-4 flex space-x-8 text-sm">
-        <button onclick="switchTab('tab-research')" id="btn-tab-research" class="py-3.5 px-1 text-slate-600 hover:text-blue-600 flex items-center gap-2 tab-active">
-          <i class="fa-solid fa-magnifying-glass"></i> 1. Research Sources
+    <!-- Workspace Tabs Navigation -->
+    <div class="glass-panel rounded-2xl border border-dark-border shadow-xl overflow-hidden">
+      <div class="border-b border-dark-border bg-dark-card/50 px-3 sm:px-6 flex overflow-x-auto text-sm font-medium">
+        <button onclick="switchTab('tab-research')" id="btn-tab-research" class="tab-btn active py-4 px-3 sm:px-5 flex items-center gap-2.5 transition border-b-2 border-transparent text-dark-muted hover:text-white">
+          <i class="fa-solid fa-magnifying-glass text-brand-400"></i>
+          <span>1. Research Vault</span>
+          <span id="tab-source-badge" class="ml-1 text-[10px] font-mono px-2 py-0.5 rounded-full bg-brand-500/20 text-brand-300 font-bold">0</span>
         </button>
-        <button onclick="switchTab('tab-editor')" id="btn-tab-editor" class="py-3.5 px-1 text-slate-600 hover:text-blue-600 flex items-center gap-2">
-          <i class="fa-solid fa-pen-to-square"></i> 2. Lesson Editor
+        <button onclick="switchTab('tab-editor')" id="btn-tab-editor" class="tab-btn py-4 px-3 sm:px-5 flex items-center gap-2.5 transition border-b-2 border-transparent text-dark-muted hover:text-white">
+          <i class="fa-solid fa-pen-to-square text-indigo-400"></i>
+          <span>2. Lesson Studio</span>
+          <span id="tab-version-badge" class="ml-1 text-[10px] font-mono px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 font-bold">v1</span>
         </button>
-        <button onclick="switchTab('tab-qc')" id="btn-tab-qc" class="py-3.5 px-1 text-slate-600 hover:text-blue-600 flex items-center gap-2">
-          <i class="fa-solid fa-shield-halved"></i> 3. Dual QC Audit
+        <button onclick="switchTab('tab-qc')" id="btn-tab-qc" class="tab-btn py-4 px-3 sm:px-5 flex items-center gap-2.5 transition border-b-2 border-transparent text-dark-muted hover:text-white">
+          <i class="fa-solid fa-shield-halved text-cyan-400"></i>
+          <span>3. Dual QC Audit</span>
+          <span id="tab-qc-badge" class="ml-1 text-[10px] font-mono px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 font-bold">Ready</span>
         </button>
-        <button onclick="switchTab('tab-preview')" id="btn-tab-preview" class="py-3.5 px-1 text-slate-600 hover:text-blue-600 flex items-center gap-2">
-          <i class="fa-solid fa-file-export"></i> 4. Preview & Export
+        <button onclick="switchTab('tab-preview')" id="btn-tab-preview" class="tab-btn py-4 px-3 sm:px-5 flex items-center gap-2.5 transition border-b-2 border-transparent text-dark-muted hover:text-white">
+          <i class="fa-solid fa-file-export text-emerald-400"></i>
+          <span>4. Preview & Export</span>
         </button>
       </div>
 
-      <!-- Tab Content Area -->
+      <!-- Tab Content Body -->
       <div class="p-6">
 
-        <!-- TAB 1: RESEARCH SOURCES -->
+        <!-- ==================== TAB 1: RESEARCH SOURCES ==================== -->
         <div id="tab-research" class="space-y-6">
-          <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-slate-50 p-4 rounded-lg border border-slate-200">
+          
+          <!-- Research Actions Bar -->
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-dark-card/70 p-4 rounded-xl border border-dark-border">
             <div>
-              <h2 class="text-base font-semibold text-slate-900">Multi-Source Research Pipeline</h2>
-              <p class="text-xs text-slate-500">Gathers authoritative evidence from websites, instructor-uploaded books (PyMuPDF), and YouTube.</p>
+              <h2 class="text-sm font-bold text-white flex items-center gap-2">
+                <i class="fa-solid fa-database text-brand-400"></i> Multi-Source Research Engine
+              </h2>
+              <p class="text-xs text-dark-muted mt-0.5">Synthesizes evidence from primary web standards, instructor PDF textbooks, and YouTube.</p>
             </div>
-            <div class="flex flex-wrap gap-2">
-              <button onclick="runWebResearch()" id="btn-run-research" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium px-3.5 py-2 rounded-lg transition flex items-center gap-1.5">
+            
+            <div class="flex flex-wrap gap-2.5">
+              <button onclick="runWebResearch()" id="btn-run-research" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-semibold px-3.5 py-2 rounded-xl transition flex items-center gap-2 shadow-md shadow-indigo-600/10">
                 <i class="fa-solid fa-globe"></i> Run Web Research
               </button>
-              <button onclick="runYouTubeResearch()" class="bg-red-600 hover:bg-red-700 text-white text-xs font-medium px-3.5 py-2 rounded-lg transition flex items-center gap-1.5">
-                <i class="fa-brands fa-youtube"></i> Find YouTube Videos
+              
+              <button onclick="runYouTubeResearch()" class="bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white text-xs font-semibold px-3.5 py-2 rounded-xl transition flex items-center gap-2 shadow-md shadow-rose-600/10">
+                <i class="fa-brands fa-youtube"></i> Discover YouTube
               </button>
-              <label class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-medium px-3.5 py-2 rounded-lg transition flex items-center gap-1.5 cursor-pointer">
-                <i class="fa-solid fa-file-pdf"></i> Upload Book PDF
+              
+              <label class="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white text-xs font-semibold px-3.5 py-2 rounded-xl transition flex items-center gap-2 shadow-md shadow-purple-600/10 cursor-pointer">
+                <i class="fa-solid fa-file-pdf"></i> Upload Book PDF (PyMuPDF)
                 <input type="file" id="pdf-file-input" accept=".pdf" class="hidden" onchange="uploadBookPdf(event)">
               </label>
             </div>
           </div>
 
-          <!-- Sources List -->
-          <div>
-            <h3 class="text-sm font-semibold text-slate-800 mb-3 flex items-center justify-between">
-              <span>Collected Sources & Excerpts (<span id="source-count">0</span>)</span>
-            </h3>
-            <div id="sources-container" class="space-y-3">
-              <div class="text-center py-10 text-slate-400 text-sm">
-                <i class="fa-solid fa-book-open text-3xl mb-2 text-slate-300"></i>
-                <p>No research sources collected yet. Click "Run Web Research" or upload a PDF.</p>
-              </div>
+          <!-- Sources Cards Grid -->
+          <div id="sources-container" class="space-y-3">
+            <div class="text-center py-16 text-dark-muted">
+              <i class="fa-solid fa-book-bookmark text-4xl mb-3 text-slate-700"></i>
+              <p class="text-sm font-medium">No research sources collected yet.</p>
+              <p class="text-xs text-slate-500 mt-1">Click "Run Web Research" or upload a reference PDF textbook above.</p>
             </div>
           </div>
         </div>
 
-        <!-- TAB 2: LESSON EDITOR -->
+        <!-- ==================== TAB 2: LESSON STUDIO ==================== -->
         <div id="tab-editor" class="space-y-6 hidden">
-          <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-slate-50 p-4 rounded-lg border border-slate-200">
+          
+          <!-- Studio Header Bar -->
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-dark-card/70 p-4 rounded-xl border border-dark-border">
             <div>
-              <h2 class="text-base font-semibold text-slate-900" id="editor-lesson-title">Lesson Title</h2>
-              <p class="text-xs text-slate-500" id="editor-lesson-objective">Objective: ...</p>
+              <h2 class="text-sm font-bold text-white flex items-center gap-2" id="editor-lesson-title">Lesson Title</h2>
+              <p class="text-xs text-dark-muted mt-0.5 line-clamp-1" id="editor-lesson-objective">Objective: ...</p>
             </div>
-            <div class="flex items-center gap-3">
-              <div id="time-checker-pill" class="text-xs font-mono px-3 py-1.5 rounded-lg bg-emerald-100 text-emerald-800 font-bold flex items-center gap-1.5">
-                <i class="fa-regular fa-clock"></i> <span id="editor-total-duration">45</span> / 45 Mins
+            
+            <div class="flex flex-wrap items-center gap-3">
+              <div id="time-checker-pill" class="text-xs font-mono px-3 py-1.5 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-bold flex items-center gap-2">
+                <i class="fa-regular fa-clock"></i> <span id="editor-total-duration">45</span> / 45 Minutes
               </div>
-              <button onclick="triggerGenerateLesson()" class="bg-purple-600 hover:bg-purple-700 text-white text-xs font-medium px-3.5 py-2 rounded-lg transition flex items-center gap-1.5">
+
+              <button onclick="triggerGenerateLesson()" id="btn-generate" class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-semibold px-3.5 py-2 rounded-xl transition flex items-center gap-2 shadow-md shadow-purple-600/15">
                 <i class="fa-solid fa-wand-magic-sparkles"></i> Synthesize / Regenerate
               </button>
-              <button onclick="saveManualEdits()" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium px-3.5 py-2 rounded-lg transition flex items-center gap-1.5">
+
+              <button onclick="saveManualEdits()" class="bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-500 hover:to-indigo-500 text-white text-xs font-semibold px-3.5 py-2 rounded-xl transition flex items-center gap-2 shadow-md shadow-indigo-600/15">
                 <i class="fa-solid fa-floppy-disk"></i> Save Edits (New Version)
               </button>
             </div>
           </div>
 
-          <!-- Section Editor List -->
+          <!-- Section Cards -->
           <div id="sections-editor-container" class="space-y-4">
-            <p class="text-slate-400 text-sm text-center py-10">Lesson has not been generated yet. Click "Synthesize / Regenerate".</p>
+            <div class="text-center py-16 text-dark-muted">
+              <i class="fa-solid fa-wand-magic text-4xl mb-3 text-slate-700"></i>
+              <p class="text-sm font-medium">Lesson draft is ready to synthesize.</p>
+              <p class="text-xs text-slate-500 mt-1">Click "Synthesize / Regenerate" to construct the 45-minute structured curriculum.</p>
+            </div>
           </div>
         </div>
 
-        <!-- TAB 3: DUAL QC AUDIT -->
+        <!-- ==================== TAB 3: DUAL QC AUDIT ==================== -->
         <div id="tab-qc" class="space-y-6 hidden">
-          <div class="flex justify-between items-center bg-slate-50 p-4 rounded-lg border border-slate-200">
+          
+          <!-- QC Controls Bar -->
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-dark-card/70 p-4 rounded-xl border border-dark-border">
             <div>
-              <h2 class="text-base font-semibold text-slate-900">Independent Dual Quality Control (QC)</h2>
-              <p class="text-xs text-slate-500">QC Layer 1 audits Factual Accuracy; QC Layer 2 audits Instructional Pedagogy.</p>
+              <h2 class="text-sm font-bold text-white flex items-center gap-2">
+                <i class="fa-solid fa-scale-balanced text-cyan-400"></i> Independent Quality Control (QC) Studio
+              </h2>
+              <p class="text-xs text-dark-muted mt-0.5">QC Layer 1 audits Factual Accuracy; QC Layer 2 audits Instructional Pedagogy.</p>
             </div>
-            <div class="flex gap-2">
-              <button onclick="runQCAudit()" id="btn-run-qc" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium px-4 py-2 rounded-lg transition flex items-center gap-1.5">
-                <i class="fa-solid fa-play"></i> Run Both QC Layers
+            
+            <div class="flex gap-2.5">
+              <button onclick="runQCAudit()" id="btn-run-qc" class="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white text-xs font-semibold px-4 py-2 rounded-xl transition flex items-center gap-2 shadow-md shadow-cyan-600/15">
+                <i class="fa-solid fa-shield-virus"></i> Run Both QC Layers
               </button>
-              <button onclick="applySelectedQCRecommendations()" id="btn-apply-rec" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-medium px-4 py-2 rounded-lg transition flex items-center gap-1.5">
+
+              <button onclick="applySelectedQCRecommendations()" id="btn-apply-rec" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-semibold px-4 py-2 rounded-xl transition flex items-center gap-2 shadow-md shadow-emerald-600/15">
                 <i class="fa-solid fa-check-double"></i> Apply Selected Fixes
               </button>
             </div>
           </div>
 
-          <!-- QC Columns: Layer 1 & Layer 2 -->
+          <!-- Side-by-Side Dual QC Panels -->
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            
+
             <!-- QC LAYER 1: FACTUAL ACCURACY -->
-            <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm space-y-4">
-              <div class="flex justify-between items-center border-b border-slate-100 pb-3">
-                <div class="flex items-center gap-2">
-                  <span class="p-1.5 rounded bg-blue-100 text-blue-700"><i class="fa-solid fa-flask text-sm"></i></span>
+            <div class="bg-dark-card rounded-2xl p-5 border border-dark-border shadow-lg space-y-4">
+              <div class="flex justify-between items-center border-b border-dark-border/80 pb-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center text-lg">
+                    <i class="fa-solid fa-flask-vial"></i>
+                  </div>
                   <div>
-                    <h3 class="font-bold text-sm text-slate-900">QC Layer 1: Factual Accuracy</h3>
-                    <p class="text-[11px] text-slate-500">RFC/Standards evidence & contradiction detection</p>
+                    <h3 class="font-bold text-sm text-white">QC Layer 1: Factual Accuracy</h3>
+                    <p class="text-[11px] text-dark-muted">Verified against IETF RFC standards & collected evidence</p>
                   </div>
                 </div>
+
                 <div class="text-right">
-                  <span id="qc1-status-pill" class="text-xs px-2.5 py-0.5 rounded font-bold bg-slate-100 text-slate-600">Pending</span>
-                  <div id="qc1-score" class="text-xs font-mono text-slate-500 mt-0.5">- / 100</div>
+                  <span id="qc1-status-pill" class="text-xs px-2.5 py-1 rounded-lg font-mono font-bold bg-slate-800 text-slate-400 border border-slate-700">PENDING</span>
+                  <div id="qc1-score" class="text-xs font-mono text-dark-muted mt-1 font-bold">- / 100</div>
                 </div>
               </div>
 
-              <div id="qc1-summary-box" class="text-xs p-3 rounded-lg bg-slate-50 text-slate-700 italic border border-slate-100">
-                Audit report will appear after running QC.
+              <div id="qc1-summary-box" class="text-xs p-3.5 rounded-xl bg-dark-bg/60 border border-dark-border text-slate-300 italic">
+                Factual audit report will appear after running QC evaluation.
               </div>
 
               <!-- Factual Issues List -->
-              <div>
-                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Detected Issues & Verifications</h4>
-                <div id="qc1-issues-container" class="space-y-2">
-                  <p class="text-xs text-slate-400">No issues reported yet.</p>
+              <div class="space-y-2">
+                <div class="text-[11px] font-bold uppercase tracking-wider text-dark-muted flex justify-between items-center">
+                  <span>Detected Claims & Verifications</span>
+                  <span id="qc1-issue-count" class="font-mono text-blue-400">0 Issues</span>
+                </div>
+                <div id="qc1-issues-container" class="space-y-2.5 max-h-[420px] overflow-y-auto pr-1">
+                  <p class="text-xs text-dark-muted italic">No issues reported yet.</p>
                 </div>
               </div>
             </div>
 
             <!-- QC LAYER 2: INSTRUCTIONAL QUALITY -->
-            <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm space-y-4">
-              <div class="flex justify-between items-center border-b border-slate-100 pb-3">
-                <div class="flex items-center gap-2">
-                  <span class="p-1.5 rounded bg-purple-100 text-purple-700"><i class="fa-solid fa-chalkboard-user text-sm"></i></span>
+            <div class="bg-dark-card rounded-2xl p-5 border border-dark-border shadow-lg space-y-4">
+              <div class="flex justify-between items-center border-b border-dark-border/80 pb-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-400 flex items-center justify-center text-lg">
+                    <i class="fa-solid fa-chalkboard-user"></i>
+                  </div>
                   <div>
-                    <h3 class="font-bold text-sm text-slate-900">QC Layer 2: Instructional Quality</h3>
-                    <p class="text-[11px] text-slate-500">Objective alignment & 45-min pacing budget</p>
+                    <h3 class="font-bold text-sm text-white">QC Layer 2: Instructional Quality</h3>
+                    <p class="text-[11px] text-dark-muted">Learning objective alignment & 45-min pacing budget</p>
                   </div>
                 </div>
+
                 <div class="text-right">
-                  <span id="qc2-status-pill" class="text-xs px-2.5 py-0.5 rounded font-bold bg-slate-100 text-slate-600">Pending</span>
-                  <div id="qc2-score" class="text-xs font-mono text-slate-500 mt-0.5">- / 100</div>
+                  <span id="qc2-status-pill" class="text-xs px-2.5 py-1 rounded-lg font-mono font-bold bg-slate-800 text-slate-400 border border-slate-700">PENDING</span>
+                  <div id="qc2-score" class="text-xs font-mono text-dark-muted mt-1 font-bold">- / 100</div>
                 </div>
               </div>
 
-              <div id="qc2-summary-box" class="text-xs p-3 rounded-lg bg-slate-50 text-slate-700 italic border border-slate-100">
-                Instructional audit will appear after running QC.
+              <div id="qc2-summary-box" class="text-xs p-3.5 rounded-xl bg-dark-bg/60 border border-dark-border text-slate-300 italic">
+                Instructional audit report will appear after running QC evaluation.
               </div>
 
               <!-- Instructional Issues List -->
-              <div>
-                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Pedagogical Recommendations</h4>
-                <div id="qc2-issues-container" class="space-y-2">
-                  <p class="text-xs text-slate-400">No issues reported yet.</p>
+              <div class="space-y-2">
+                <div class="text-[11px] font-bold uppercase tracking-wider text-dark-muted flex justify-between items-center">
+                  <span>Pedagogical Diagnostics</span>
+                  <span id="qc2-issue-count" class="font-mono text-purple-400">0 Issues</span>
+                </div>
+                <div id="qc2-issues-container" class="space-y-2.5 max-h-[420px] overflow-y-auto pr-1">
+                  <p class="text-xs text-dark-muted italic">No issues reported yet.</p>
                 </div>
               </div>
             </div>
@@ -216,23 +444,26 @@
           </div>
         </div>
 
-        <!-- TAB 4: PREVIEW & EXPORT -->
+        <!-- ==================== TAB 4: PREVIEW & EXPORT ==================== -->
         <div id="tab-preview" class="space-y-6 hidden">
-          <div class="flex justify-between items-center bg-slate-50 p-4 rounded-lg border border-slate-200">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-dark-card/70 p-4 rounded-xl border border-dark-border">
             <div>
-              <h2 class="text-base font-semibold text-slate-900">Approved Lesson Preview & Export</h2>
-              <p class="text-xs text-slate-500">Full 45-minute lesson, references, worked examples, and dual QC audit reports.</p>
+              <h2 class="text-sm font-bold text-white flex items-center gap-2">
+                <i class="fa-solid fa-file-lines text-emerald-400"></i> Finalized Lesson & Audit Package Preview
+              </h2>
+              <p class="text-xs text-dark-muted mt-0.5">Approved lesson plan, worked examples, activities, assessments, and both QC audit reports.</p>
             </div>
-            <div class="flex gap-2">
-              <button onclick="downloadExportMarkdown()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-medium px-4 py-2 rounded-lg transition flex items-center gap-1.5 shadow-sm">
+            
+            <div class="flex gap-2.5">
+              <button onclick="downloadExportMarkdown()" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-semibold px-4 py-2 rounded-xl transition flex items-center gap-2 shadow-md shadow-emerald-600/15">
                 <i class="fa-solid fa-download"></i> Download Export (.md)
               </button>
             </div>
           </div>
 
-          <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-            <div id="preview-container" class="prose max-w-none text-slate-800 text-sm leading-relaxed space-y-4">
-              <p class="text-slate-400">Select a generated lesson to preview.</p>
+          <div class="bg-dark-card p-6 sm:p-8 rounded-2xl border border-dark-border shadow-xl">
+            <div id="preview-container" class="space-y-6 text-slate-200 text-sm leading-relaxed">
+              <p class="text-dark-muted text-center py-10">Select a generated lesson to preview.</p>
             </div>
           </div>
         </div>
@@ -242,32 +473,37 @@
   </main>
 
   <!-- Create Lesson Modal -->
-  <div id="create-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center hidden">
-    <div class="bg-white rounded-xl shadow-xl max-w-lg w-full p-6 m-4 border border-slate-200">
-      <div class="flex justify-between items-center pb-3 border-b border-slate-100">
-        <h3 class="text-base font-bold text-slate-900">Create New Lesson Draft</h3>
-        <button onclick="closeCreateModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+  <div id="create-modal" class="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center hidden p-4">
+    <div class="bg-dark-card rounded-2xl shadow-2xl max-w-lg w-full p-6 border border-dark-border relative">
+      <div class="flex justify-between items-center pb-3.5 border-b border-dark-border">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-brand-500/10 text-brand-400 flex items-center justify-center font-bold">
+            <i class="fa-solid fa-plus text-xs"></i>
+          </div>
+          <h3 class="text-sm font-bold text-white">Create New Curriculum Draft</h3>
+        </div>
+        <button onclick="closeCreateModal()" class="text-dark-muted hover:text-white transition"><i class="fa-solid fa-xmark"></i></button>
       </div>
 
       <form id="create-lesson-form" onsubmit="handleCreateLesson(event)" class="space-y-4 mt-4">
         <div>
-          <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Lesson Title *</label>
-          <input type="text" id="input-title" required minlength="3" placeholder="e.g. HTTP Requests and Responses" class="w-full text-sm p-2.5 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500">
+          <label class="block text-xs font-bold text-dark-muted uppercase mb-1 tracking-wider">Lesson Title *</label>
+          <input type="text" id="input-title" required minlength="3" placeholder="e.g. HTTP Requests and Responses" class="w-full text-sm p-3 rounded-xl bg-dark-bg border border-dark-border text-white focus:ring-2 focus:ring-brand-500 focus:outline-none">
         </div>
 
         <div>
-          <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Learning Objective *</label>
-          <textarea id="input-objective" required minlength="10" rows="3" placeholder="e.g. Explain GET and POST methods and distinguish between 2xx, 4xx, and 5xx response status categories." class="w-full text-sm p-2.5 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500"></textarea>
+          <label class="block text-xs font-bold text-dark-muted uppercase mb-1 tracking-wider">Learning Objective *</label>
+          <textarea id="input-objective" required minlength="10" rows="3" placeholder="e.g. Explain GET and POST methods and distinguish between 2xx, 4xx, and 5xx response status categories." class="w-full text-sm p-3 rounded-xl bg-dark-bg border border-dark-border text-white focus:ring-2 focus:ring-brand-500 focus:outline-none"></textarea>
         </div>
 
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Target Audience</label>
-            <input type="text" id="input-audience" value="Undergraduate Computer Science" class="w-full text-sm p-2.5 rounded-lg border border-slate-300">
+            <label class="block text-xs font-bold text-dark-muted uppercase mb-1 tracking-wider">Target Audience</label>
+            <input type="text" id="input-audience" value="Undergraduate Computer Science" class="w-full text-sm p-2.5 rounded-xl bg-dark-bg border border-dark-border text-white">
           </div>
           <div>
-            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Teaching Mode</label>
-            <select id="input-mode" class="w-full text-sm p-2.5 rounded-lg border border-slate-300">
+            <label class="block text-xs font-bold text-dark-muted uppercase mb-1 tracking-wider">Teaching Mode</label>
+            <select id="input-mode" class="w-full text-sm p-2.5 rounded-xl bg-dark-bg border border-dark-border text-white">
               <option value="self-learning">Self-learning</option>
               <option value="instructor-led">Instructor-led</option>
               <option value="hybrid">Hybrid</option>
@@ -275,52 +511,69 @@
           </div>
         </div>
 
-        <div class="p-3 bg-blue-50 rounded-lg text-xs text-blue-800 flex items-center justify-between">
-          <span class="font-medium"><i class="fa-regular fa-clock mr-1"></i> Fixed Duration:</span>
-          <span class="font-bold">45 Minutes</span>
+        <div class="p-3 bg-brand-500/10 border border-brand-500/20 rounded-xl text-xs text-brand-300 flex items-center justify-between">
+          <span class="font-medium"><i class="fa-regular fa-clock mr-1.5 text-brand-400"></i> Strict Pacing Budget:</span>
+          <span class="font-mono font-bold">45 Minutes Fixed</span>
         </div>
 
-        <div id="create-error-msg" class="text-xs text-red-600 hidden font-medium"></div>
+        <div id="create-error-msg" class="text-xs text-rose-400 hidden font-medium"></div>
 
-        <div class="flex justify-end gap-2 pt-2">
-          <button type="button" onclick="closeCreateModal()" class="px-4 py-2 text-xs font-medium text-slate-600 hover:text-slate-800">Cancel</button>
-          <button type="submit" id="btn-submit-create" class="px-4 py-2 text-xs font-medium bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition shadow-sm">Create Draft</button>
+        <div class="flex justify-end gap-2.5 pt-2">
+          <button type="button" onclick="closeCreateModal()" class="px-4 py-2 text-xs font-medium text-dark-muted hover:text-white transition">Cancel</button>
+          <button type="submit" id="btn-submit-create" class="px-5 py-2 text-xs font-semibold bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-500 hover:to-indigo-500 text-white rounded-xl transition shadow-md shadow-indigo-600/20">
+            Create Lesson Draft
+          </button>
         </div>
       </form>
     </div>
   </div>
 
   <!-- Notification Toast -->
-  <div id="toast" class="fixed bottom-5 right-5 max-w-sm bg-slate-900 text-white px-4 py-3 rounded-lg shadow-lg text-xs z-50 transition transform translate-y-20 opacity-0 flex items-center gap-2">
-    <i id="toast-icon" class="fa-solid fa-circle-info"></i>
-    <span id="toast-text">Message</span>
+  <div id="toast" class="fixed bottom-6 right-6 max-w-sm bg-dark-card border border-dark-border text-white px-4 py-3 rounded-xl shadow-2xl text-xs z-50 transition transform translate-y-24 opacity-0 flex items-center gap-3">
+    <i id="toast-icon" class="fa-solid fa-circle-info text-brand-400 text-base"></i>
+    <span id="toast-text" class="font-medium">Notification message</span>
   </div>
 
+  <!-- JavaScript Logic -->
   <script>
     const API_BASE = "http://127.0.0.1:8000/api";
     let currentLessonId = null;
     let currentLessonData = null;
     let allQCIssues = [];
 
+    // Dark/Light Theme Handler
+    function toggleTheme() {
+      const html = document.documentElement;
+      const isDark = html.classList.toggle('dark');
+      const icon = document.getElementById('theme-icon');
+      if (isDark) {
+        icon.className = 'fa-solid fa-moon';
+        localStorage.setItem('theme', 'dark');
+      } else {
+        icon.className = 'fa-solid fa-sun';
+        localStorage.setItem('theme', 'light');
+      }
+    }
+
     function showToast(msg, type = "info") {
       const toast = document.getElementById("toast");
       const text = document.getElementById("toast-text");
       const icon = document.getElementById("toast-icon");
       text.innerText = msg;
-      if (type === "success") icon.className = "fa-solid fa-circle-check text-emerald-400";
-      else if (type === "error") icon.className = "fa-solid fa-triangle-exclamation text-rose-400";
-      else icon.className = "fa-solid fa-circle-info text-blue-400";
-      toast.classList.remove("translate-y-20", "opacity-0");
-      setTimeout(() => toast.classList.add("translate-y-20", "opacity-0"), 4000);
+      if (type === "success") icon.className = "fa-solid fa-circle-check text-emerald-400 text-base";
+      else if (type === "error") icon.className = "fa-solid fa-triangle-exclamation text-rose-400 text-base";
+      else icon.className = "fa-solid fa-circle-info text-brand-400 text-base";
+      toast.classList.remove("translate-y-24", "opacity-0");
+      setTimeout(() => toast.classList.add("translate-y-24", "opacity-0"), 4000);
     }
 
     function switchTab(tabId) {
       ['tab-research', 'tab-editor', 'tab-qc', 'tab-preview'].forEach(t => {
         document.getElementById(t).classList.add('hidden');
-        document.getElementById('btn-' + t).classList.remove('tab-active');
+        document.getElementById('btn-' + t).classList.remove('active');
       });
       document.getElementById(tabId).classList.remove('hidden');
-      document.getElementById('btn-' + tabId).classList.add('tab-active');
+      document.getElementById('btn-' + tabId).classList.add('active');
     }
 
     function openCreateModal() { document.getElementById("create-modal").classList.remove("hidden"); }
@@ -333,13 +586,13 @@
         const select = document.getElementById("lesson-select");
         select.innerHTML = "";
         if (data.items.length === 0) {
-          select.innerHTML = '<option value="">No lessons found. Create one!</option>';
+          select.innerHTML = '<option value="">No lessons found. Create a draft!</option>';
           return;
         }
         data.items.forEach(l => {
           const opt = document.createElement("option");
           opt.value = l.id;
-          opt.textContent = `${l.title} (${l.status})`;
+          opt.textContent = `${l.title} [${l.status.toUpperCase()}]`;
           select.appendChild(opt);
         });
         if (!currentLessonId || !data.items.some(l => l.id === currentLessonId)) {
@@ -348,7 +601,7 @@
         select.value = currentLessonId;
         await loadSelectedLesson();
       } catch (e) {
-        showToast("Error connecting to API server", "error");
+        showToast("Error connecting to FastAPI backend", "error");
       }
     }
 
@@ -361,11 +614,17 @@
         const res = await fetch(`${API_BASE}/lessons/${currentLessonId}`);
         currentLessonData = await res.json();
         
-        // Update badges
-        document.getElementById("badge-status").innerText = `Status: ${currentLessonData.status.toUpperCase()}`;
-        document.getElementById("badge-version").innerText = `Version: ${currentLessonData.current_version ? 'v' + currentLessonData.current_version.version_number : 'None'}`;
-        
-        // Populate Editor Header
+        // Update Meta Badges
+        const statusUpper = currentLessonData.status.toUpperCase();
+        document.getElementById("badge-status").innerText = `STATUS: ${statusUpper}`;
+        const verNum = currentLessonData.current_version ? currentLessonData.current_version.version_number : 1;
+        document.getElementById("badge-version").innerText = `VERSION: v${verNum}`;
+        document.getElementById("tab-version-badge").innerText = `v${verNum}`;
+
+        // Update Stepper
+        updateStepper(currentLessonData.status);
+
+        // Update Editor Header
         document.getElementById("editor-lesson-title").innerText = currentLessonData.title;
         document.getElementById("editor-lesson-objective").innerText = "Objective: " + currentLessonData.learning_objective;
 
@@ -378,50 +637,88 @@
       }
     }
 
+    function updateStepper(status) {
+      const steps = ['intake', 'research', 'synthesis', 'qc1', 'qc2', 'export'];
+      const statusMap = {
+        'draft': 1,
+        'researching': 2,
+        'research_completed': 2,
+        'generating': 3,
+        'generated': 3,
+        'qc_completed': 5,
+        'instructor_review': 5,
+        'review_updated': 5,
+        'approved': 6
+      };
+      const activeIdx = statusMap[status] || 1;
+
+      steps.forEach((s, idx) => {
+        const el = document.getElementById('step-' + s);
+        if (idx < activeIdx) {
+          el.className = 'p-2.5 rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-300 flex items-center gap-2';
+          el.querySelector('i').className = 'fa-solid fa-circle-check text-emerald-400';
+        } else if (idx === activeIdx - 1) {
+          el.className = 'p-2.5 rounded-xl border border-brand-500/40 bg-brand-500/20 text-brand-300 font-bold flex items-center gap-2';
+        } else {
+          el.className = 'p-2.5 rounded-xl border border-dark-border bg-dark-card text-dark-muted flex items-center gap-2';
+        }
+      });
+    }
+
     async function loadSources() {
       const container = document.getElementById("sources-container");
       try {
         const res = await fetch(`${API_BASE}/lessons/${currentLessonId}/sources`);
         const data = await res.json();
-        document.getElementById("source-count").innerText = data.total;
+        document.getElementById("tab-source-badge").innerText = data.total;
         if (data.total === 0) {
           container.innerHTML = `
-            <div class="text-center py-10 text-slate-400 text-sm">
-              <i class="fa-solid fa-book-open text-3xl mb-2 text-slate-300"></i>
-              <p>No research sources collected yet. Click "Run Web Research" or upload a PDF.</p>
+            <div class="text-center py-16 text-dark-muted">
+              <i class="fa-solid fa-book-bookmark text-4xl mb-3 text-slate-700"></i>
+              <p class="text-sm font-medium">No research sources collected yet.</p>
+              <p class="text-xs text-slate-500 mt-1">Click "Run Web Research" or upload a reference PDF textbook above.</p>
             </div>`;
           return;
         }
 
         container.innerHTML = data.items.map(s => {
-          const icon = s.source_type === "website" ? "fa-globe text-blue-500" :
-                       s.source_type === "youtube" ? "fa-youtube text-red-500" : "fa-file-pdf text-indigo-500";
+          const icon = s.source_type === "website" ? "fa-globe text-blue-400" :
+                       s.source_type === "youtube" ? "fa-youtube text-rose-500" : "fa-file-pdf text-purple-400";
           const scorePercent = Math.round(s.relevance_score * 100);
-          const chunksPreview = s.chunks.map(c => `
-            <div class="bg-slate-50 p-2.5 rounded text-xs text-slate-700 border border-slate-100 mb-1">
-              ${c.page_number ? `<span class="font-bold text-indigo-600">[Page ${c.page_number}]</span> ` : ''}
-              ${c.chunk_text.slice(0, 300)}...
+          const tier = s.source_metadata?.evaluation?.authority_tier || "Curated Reference";
+
+          const chunksHtml = s.chunks.map(c => `
+            <div class="bg-dark-bg/80 p-3 rounded-lg text-xs text-slate-300 border border-dark-border/80">
+              ${c.page_number ? `<span class="font-bold text-indigo-400 font-mono">[Page ${c.page_number}]</span> ` : ''}
+              ${c.chunk_text.slice(0, 320)}...
             </div>
           `).join("");
 
           return `
-            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:border-slate-300 transition">
-              <div class="flex justify-between items-start mb-2">
-                <div class="flex items-center gap-2">
-                  <i class="fa-solid ${icon} text-lg"></i>
+            <div class="bg-dark-card p-4 rounded-xl border border-dark-border shadow-md hover:border-slate-700 transition">
+              <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-2">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-lg bg-dark-bg border border-dark-border flex items-center justify-center">
+                    <i class="fa-solid ${icon}"></i>
+                  </div>
                   <div>
-                    <h4 class="text-sm font-bold text-slate-900">${s.title}</h4>
-                    <p class="text-xs text-slate-500">${s.author_publisher || 'Web'} &bull; <a href="${s.url_or_identifier}" target="_blank" class="text-blue-600 hover:underline">Link</a></p>
+                    <h4 class="text-sm font-bold text-white hover:text-brand-400 transition">${s.title}</h4>
+                    <p class="text-xs text-dark-muted">${s.author_publisher || 'Web Authority'} &bull; <a href="${s.url_or_identifier}" target="_blank" class="text-brand-400 hover:underline">Inspect Source <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i></a></p>
                   </div>
                 </div>
-                <span class="text-xs px-2 py-0.5 rounded font-mono font-bold ${scorePercent >= 80 ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-700'}">
-                  ${scorePercent}% Relevance
-                </span>
+                <div class="flex items-center gap-2">
+                  <span class="text-[11px] px-2.5 py-0.5 rounded-md bg-dark-bg text-dark-muted font-mono border border-dark-border">${tier}</span>
+                  <span class="text-xs px-2.5 py-0.5 rounded-md font-mono font-bold ${scorePercent >= 80 ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-slate-800 text-slate-300'}">
+                    ${scorePercent}% Relevance
+                  </span>
+                </div>
               </div>
               <div class="mt-3">
-                <details class="text-xs text-slate-600 cursor-pointer">
-                  <summary class="font-medium text-slate-700 hover:text-blue-600 mb-2">View ${s.chunks.length} Extracted Passages</summary>
-                  <div class="pl-2 border-l-2 border-slate-200 space-y-1">${chunksPreview}</div>
+                <details class="text-xs cursor-pointer">
+                  <summary class="font-semibold text-brand-400 hover:text-brand-300 transition mb-2">
+                    <i class="fa-solid fa-chevron-right text-[10px] mr-1"></i> View ${s.chunks.length} Extracted & Verified Passages
+                  </summary>
+                  <div class="pl-2 border-l-2 border-brand-500/40 space-y-1.5 mt-2">${chunksHtml}</div>
                 </details>
               </div>
             </div>
@@ -439,7 +736,7 @@
       try {
         const res = await fetch(`${API_BASE}/lessons/${currentLessonId}/research`, { method: "POST" });
         if (res.ok) {
-          showToast("Web research completed successfully!", "success");
+          showToast("Web research completed & sources evaluated!", "success");
           await loadSelectedLesson();
         } else {
           showToast("Web research encountered an error", "error");
@@ -452,10 +749,10 @@
 
     async function runYouTubeResearch() {
       try {
-        showToast("Searching for relevant YouTube resources...", "info");
+        showToast("Querying YouTube Data API for resources...", "info");
         const res = await fetch(`${API_BASE}/lessons/${currentLessonId}/youtube`, { method: "POST" });
         if (res.ok) {
-          showToast("Supplementary videos cataloged!", "success");
+          showToast("Supplementary visual resources cataloged!", "success");
           await loadSelectedLesson();
         }
       } catch (e) {
@@ -468,7 +765,7 @@
       if (!file) return;
       const formData = new FormData();
       formData.append("file", file);
-      showToast("Uploading and extracting PDF pages with PyMuPDF...", "info");
+      showToast("Extracting PDF text page-by-page via PyMuPDF...", "info");
 
       try {
         const res = await fetch(`${API_BASE}/lessons/${currentLessonId}/upload-pdf`, {
@@ -476,14 +773,14 @@
           body: formData
         });
         if (res.ok) {
-          showToast("PDF extracted and passages chunked successfully!", "success");
+          showToast("PDF extracted and passages chunked with page numbers!", "success");
           await loadSelectedLesson();
         } else {
           const err = await res.json();
           showToast(err.detail || "PDF upload failed", "error");
         }
       } catch (e) {
-        showToast("Error uploading PDF", "error");
+        showToast("Error processing PDF", "error");
       }
     }
 
@@ -491,21 +788,26 @@
       const container = document.getElementById("sections-editor-container");
       const ver = currentLessonData.current_version;
       if (!ver) {
-        container.innerHTML = `<p class="text-slate-400 text-sm text-center py-10">Lesson has not been generated yet. Click "Synthesize / Regenerate".</p>`;
+        container.innerHTML = `
+          <div class="text-center py-16 text-dark-muted">
+            <i class="fa-solid fa-wand-magic text-4xl mb-3 text-slate-700"></i>
+            <p class="text-sm font-medium">Lesson draft is ready to synthesize.</p>
+            <p class="text-xs text-slate-500 mt-1">Click "Synthesize / Regenerate" to construct the 45-minute structured curriculum.</p>
+          </div>`;
         return;
       }
       const content = ver.content;
 
       container.innerHTML = content.sections.map((sec, idx) => `
-        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-3" data-sec-idx="${idx}">
-          <div class="flex justify-between items-center gap-3">
-            <input type="text" class="sec-title-input font-bold text-sm text-slate-900 border-b border-transparent hover:border-slate-300 focus:border-blue-500 w-full p-1" value="${sec.title}">
-            <div class="flex items-center gap-1.5 shrink-0 text-xs">
-              <label class="text-slate-500 font-medium">Minutes:</label>
-              <input type="number" min="1" max="45" onchange="recalculateEditorDuration()" class="sec-dur-input font-mono w-14 p-1 text-center border border-slate-300 rounded font-bold" value="${sec.duration_minutes}">
+        <div class="bg-dark-card p-5 rounded-2xl border border-dark-border shadow-md space-y-3" data-sec-idx="${idx}">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-dark-border/80 pb-3">
+            <input type="text" class="sec-title-input font-bold text-sm text-white bg-transparent border-b border-transparent hover:border-dark-border focus:border-brand-500 focus:outline-none w-full p-1" value="${sec.title}">
+            <div class="flex items-center gap-2 shrink-0 text-xs">
+              <label class="text-dark-muted font-medium">Allotted Minutes:</label>
+              <input type="number" min="1" max="45" onchange="recalculateEditorDuration()" class="sec-dur-input font-mono w-16 p-1.5 text-center bg-dark-bg border border-dark-border rounded-lg text-emerald-400 font-bold focus:ring-1 focus:ring-brand-500 focus:outline-none" value="${sec.duration_minutes}">
             </div>
           </div>
-          <textarea rows="4" class="sec-content-input w-full text-xs text-slate-700 p-2.5 rounded-lg border border-slate-200 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 font-sans">${sec.content}</textarea>
+          <textarea rows="4" class="sec-content-input w-full text-xs text-slate-200 p-3 rounded-xl bg-dark-bg border border-dark-border focus:ring-1 focus:ring-brand-500 focus:outline-none font-sans leading-relaxed">${sec.content}</textarea>
         </div>
       `).join("");
 
@@ -516,21 +818,27 @@
       const durInputs = document.querySelectorAll(".sec-dur-input");
       let total = 0;
       durInputs.forEach(i => total += parseInt(i.value || 0, 10));
-      // plus activity (5) + assessment (7)
-      const fullTotal = total + 5 + 7;
+      const fullTotal = total + 5 + 7; // +5 activity + 7 knowledge check
       const pill = document.getElementById("time-checker-pill");
       const countSpan = document.getElementById("editor-total-duration");
       countSpan.innerText = fullTotal;
 
       if (fullTotal === 45) {
-        pill.className = "text-xs font-mono px-3 py-1.5 rounded-lg bg-emerald-100 text-emerald-800 font-bold flex items-center gap-1.5";
+        pill.className = "text-xs font-mono px-3 py-1.5 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-bold flex items-center gap-2";
+        document.getElementById("pacing-track-sum").innerText = "45 / 45 Minutes Allocated (100% Balanced)";
+        document.getElementById("pacing-track-sum").className = "font-mono font-bold text-emerald-400";
       } else {
-        pill.className = "text-xs font-mono px-3 py-1.5 rounded-lg bg-rose-100 text-rose-800 font-bold flex items-center gap-1.5";
+        pill.className = "text-xs font-mono px-3 py-1.5 rounded-xl bg-rose-500/10 text-rose-400 border border-rose-500/30 font-bold flex items-center gap-2";
+        document.getElementById("pacing-track-sum").innerText = `${fullTotal} / 45 Minutes (Pacing Mismatch)`;
+        document.getElementById("pacing-track-sum").className = "font-mono font-bold text-rose-400";
       }
     }
 
     async function triggerGenerateLesson() {
-      showToast("Generating structured 45-minute lesson...", "info");
+      const btn = document.getElementById("btn-generate");
+      btn.disabled = true;
+      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Synthesizing...`;
+      showToast("Synthesizing 45-minute lesson grounded in research...", "info");
       try {
         const res = await fetch(`${API_BASE}/lessons/${currentLessonId}/generate`, { method: "POST" });
         if (res.ok) {
@@ -540,8 +848,9 @@
         } else {
           showToast("Generation failed", "error");
         }
-      } catch (e) {
-        showToast("Error calling generator", "error");
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<i class="fa-solid fa-wand-magic-sparkles"></i> Synthesize / Regenerate`;
       }
     }
 
@@ -564,7 +873,7 @@
           body: JSON.stringify({ content: content, edit_summary: "Instructor edits via UI" })
         });
         if (res.ok) {
-          showToast("Saved as new lesson version!", "success");
+          showToast("Saved as new lesson version without overwriting prior drafts!", "success");
           await loadSelectedLesson();
         } else {
           const err = await res.json();
@@ -582,63 +891,68 @@
         if (!res.ok) return;
         const data = await res.json();
 
-        // QC 1: Factual
+        // QC 1: Factual Accuracy
         if (data.factual_qc) {
           const rep = data.factual_qc.report;
-          document.getElementById("qc1-status-pill").innerText = rep.status.toUpperCase();
-          document.getElementById("qc1-status-pill").className = rep.status === "passed" ? "text-xs px-2.5 py-0.5 rounded font-bold bg-emerald-100 text-emerald-800" : "text-xs px-2.5 py-0.5 rounded font-bold bg-rose-100 text-rose-800";
+          const statusPill = document.getElementById("qc1-status-pill");
+          statusPill.innerText = rep.status.toUpperCase();
+          statusPill.className = rep.status === "passed" ? "text-xs px-2.5 py-1 rounded-lg font-mono font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20" : "text-xs px-2.5 py-1 rounded-lg font-mono font-bold bg-rose-500/10 text-rose-400 border border-rose-500/20";
           document.getElementById("qc1-score").innerText = `${rep.overall_score} / 100`;
           document.getElementById("qc1-summary-box").innerText = rep.summary;
 
           const container1 = document.getElementById("qc1-issues-container");
+          document.getElementById("qc1-issue-count").innerText = `${rep.issues.length} Issues`;
+
           if (!rep.issues || rep.issues.length === 0) {
-            container1.innerHTML = `<p class="text-xs text-emerald-600"><i class="fa-solid fa-check mr-1"></i> No factual errors detected. Claims supported by standards.</p>`;
+            container1.innerHTML = `<div class="p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-xl text-xs text-emerald-300"><i class="fa-solid fa-check-circle mr-1.5"></i> All claims strictly verified against RFC standards. Zero factual defects detected.</div>`;
           } else {
             container1.innerHTML = rep.issues.map(iss => {
               allQCIssues.push(iss);
-              const sevBadge = iss.severity === "critical" ? "bg-rose-100 text-rose-800" : iss.severity === "high" ? "bg-amber-100 text-amber-800" : "bg-slate-100 text-slate-800";
+              const isCrit = iss.severity === "critical";
               return `
-                <div class="p-3 rounded-lg border border-slate-200 bg-slate-50 space-y-1.5 text-xs">
+                <div class="p-3.5 rounded-xl border ${isCrit ? 'border-rose-500/40 bg-rose-500/10' : 'border-amber-500/40 bg-amber-500/10'} space-y-2 text-xs">
                   <div class="flex justify-between items-center">
-                    <span class="px-2 py-0.5 rounded font-bold uppercase font-mono text-[10px] ${sevBadge}">${iss.severity}</span>
-                    <label class="flex items-center gap-1.5 text-slate-700 cursor-pointer font-medium">
-                      <input type="checkbox" value="${iss.issue_id}" class="qc-fix-checkbox rounded text-blue-600"> Select to Fix
+                    <span class="px-2 py-0.5 rounded font-bold uppercase font-mono text-[10px] ${isCrit ? 'bg-rose-500/20 text-rose-300' : 'bg-amber-500/20 text-amber-300'}">${iss.severity}</span>
+                    <label class="flex items-center gap-1.5 text-white cursor-pointer font-semibold">
+                      <input type="checkbox" value="${iss.issue_id}" class="qc-fix-checkbox rounded text-brand-500"> Select to Fix
                     </label>
                   </div>
-                  <p class="font-semibold text-slate-900">${iss.explanation}</p>
-                  ${iss.evidence_considered ? `<p class="text-slate-600 italic">Evidence: ${iss.evidence_considered}</p>` : ''}
-                  <p class="text-blue-700 font-medium">Recommendation: ${iss.recommendation}</p>
+                  <p class="font-bold text-white">${iss.explanation}</p>
+                  ${iss.evidence_considered ? `<div class="p-2 rounded bg-black/40 text-slate-300 font-mono text-[11px] border border-white/5"><span class="text-indigo-400 font-bold">Evidence:</span> ${iss.evidence_considered}</div>` : ''}
+                  <p class="text-brand-300 font-medium"><span class="text-white font-bold">Correction:</span> ${iss.recommendation}</p>
                 </div>
               `;
             }).join("");
           }
         }
 
-        // QC 2: Instructional
+        // QC 2: Instructional Quality
         if (data.instructional_qc) {
           const rep = data.instructional_qc.report;
-          document.getElementById("qc2-status-pill").innerText = rep.status.toUpperCase();
-          document.getElementById("qc2-status-pill").className = rep.status === "passed" ? "text-xs px-2.5 py-0.5 rounded font-bold bg-emerald-100 text-emerald-800" : "text-xs px-2.5 py-0.5 rounded font-bold bg-amber-100 text-amber-800";
+          const statusPill = document.getElementById("qc2-status-pill");
+          statusPill.innerText = rep.status.toUpperCase();
+          statusPill.className = rep.status === "passed" ? "text-xs px-2.5 py-1 rounded-lg font-mono font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20" : "text-xs px-2.5 py-1 rounded-lg font-mono font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20";
           document.getElementById("qc2-score").innerText = `${rep.overall_score} / 100`;
           document.getElementById("qc2-summary-box").innerText = rep.summary;
 
           const container2 = document.getElementById("qc2-issues-container");
+          document.getElementById("qc2-issue-count").innerText = `${rep.issues.length} Issues`;
+
           if (!rep.issues || rep.issues.length === 0) {
-            container2.innerHTML = `<p class="text-xs text-emerald-600"><i class="fa-solid fa-check mr-1"></i> Pacing, activity, and objective coverage verified.</p>`;
+            container2.innerHTML = `<div class="p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-xl text-xs text-emerald-300"><i class="fa-solid fa-check-circle mr-1.5"></i> 45-minute budget verified. Objective alignment and assessment depth confirmed.</div>`;
           } else {
             container2.innerHTML = rep.issues.map(iss => {
               allQCIssues.push(iss);
-              const sevBadge = iss.severity === "critical" ? "bg-rose-100 text-rose-800" : iss.severity === "high" ? "bg-amber-100 text-amber-800" : "bg-slate-100 text-slate-800";
               return `
-                <div class="p-3 rounded-lg border border-slate-200 bg-slate-50 space-y-1.5 text-xs">
+                <div class="p-3.5 rounded-xl border border-amber-500/40 bg-amber-500/10 space-y-2 text-xs">
                   <div class="flex justify-between items-center">
-                    <span class="px-2 py-0.5 rounded font-bold uppercase font-mono text-[10px] ${sevBadge}">${iss.severity}</span>
-                    <label class="flex items-center gap-1.5 text-slate-700 cursor-pointer font-medium">
-                      <input type="checkbox" value="${iss.issue_id}" class="qc-fix-checkbox rounded text-blue-600"> Select to Fix
+                    <span class="px-2 py-0.5 rounded font-bold uppercase font-mono text-[10px] bg-amber-500/20 text-amber-300">${iss.severity}</span>
+                    <label class="flex items-center gap-1.5 text-white cursor-pointer font-semibold">
+                      <input type="checkbox" value="${iss.issue_id}" class="qc-fix-checkbox rounded text-brand-500"> Select to Fix
                     </label>
                   </div>
-                  <p class="font-semibold text-slate-900">${iss.explanation}</p>
-                  <p class="text-purple-700 font-medium">Recommendation: ${iss.recommendation}</p>
+                  <p class="font-bold text-white">${iss.explanation}</p>
+                  <p class="text-purple-300 font-medium"><span class="text-white font-bold">Recommendation:</span> ${iss.recommendation}</p>
                 </div>
               `;
             }).join("");
@@ -656,25 +970,25 @@
       try {
         const res = await fetch(`${API_BASE}/lessons/${currentLessonId}/qc`, { method: "POST" });
         if (res.ok) {
-          showToast("Dual QC evaluation complete!", "success");
+          showToast("Dual QC audit completed with independent reports!", "success");
           await loadQCReports();
         } else {
           showToast("QC evaluation failed", "error");
         }
       } finally {
         btn.disabled = false;
-        btn.innerHTML = `<i class="fa-solid fa-play"></i> Run Both QC Layers`;
+        btn.innerHTML = `<i class="fa-solid fa-shield-virus"></i> Run Both QC Layers`;
       }
     }
 
     async function applySelectedQCRecommendations() {
       const checked = Array.from(document.querySelectorAll(".qc-fix-checkbox:checked")).map(c => c.value);
       if (checked.length === 0) {
-        showToast("Please check at least one recommendation to apply.", "info");
+        showToast("Select at least one recommendation checkbox to apply.", "info");
         return;
       }
 
-      showToast(`Applying ${checked.length} accepted recommendations...`, "info");
+      showToast(`Applying ${checked.length} accepted recommendations to new version...`, "info");
       try {
         const res = await fetch(`${API_BASE}/lessons/${currentLessonId}/recommendations/apply`, {
           method: "POST",
@@ -682,9 +996,8 @@
           body: JSON.stringify({ accepted_issue_ids: checked })
         });
         if (res.ok) {
-          showToast("Recommendations applied to new lesson version!", "success");
+          showToast("Applied recommendations! Saved as revised version.", "success");
           await loadSelectedLesson();
-          // Automatically rerun QC on improved version
           await runQCAudit();
         }
       } catch (e) {
@@ -702,38 +1015,62 @@
         if (!c) return;
 
         container.innerHTML = `
-          <div class="border-b border-slate-200 pb-4 mb-4">
-            <h1 class="text-xl font-bold text-slate-900">${c.title}</h1>
-            <p class="text-xs text-slate-500 mt-1">Duration: ${c.total_duration_minutes} Minutes &bull; Version: v${data.version_number} &bull; Audience: ${c.target_audience}</p>
-            <p class="mt-2 text-xs font-medium text-slate-700 bg-slate-100 p-2.5 rounded-lg"><strong>Learning Objective:</strong> ${c.learning_objective}</p>
+          <div class="border-b border-dark-border pb-5 mb-6">
+            <h1 class="text-2xl font-extrabold text-white tracking-tight">${c.title}</h1>
+            <div class="flex flex-wrap gap-2 text-xs text-dark-muted mt-2">
+              <span class="px-2.5 py-0.5 rounded bg-dark-bg border border-dark-border font-mono">Duration: ${c.total_duration_minutes} Mins</span>
+              <span class="px-2.5 py-0.5 rounded bg-dark-bg border border-dark-border font-mono">Version: v${data.version_number}</span>
+              <span class="px-2.5 py-0.5 rounded bg-dark-bg border border-dark-border font-mono">Audience: ${c.target_audience}</span>
+            </div>
+            <div class="mt-4 text-xs font-medium text-slate-200 bg-brand-500/10 border border-brand-500/20 p-3 rounded-xl leading-relaxed">
+              <strong class="text-brand-300">Learning Objective:</strong> ${c.learning_objective}
+            </div>
           </div>
-          <div class="space-y-4">
-            <h3 class="text-sm font-bold uppercase text-slate-500">Lesson Sections</h3>
-            ${c.sections.map(s => `
-              <div class="p-3 rounded-lg border border-slate-200 bg-slate-50">
-                <div class="flex justify-between font-bold text-xs text-slate-900 mb-1">
-                  <span>${s.title}</span>
-                  <span class="font-mono text-blue-600">${s.duration_minutes}m</span>
-                </div>
-                <p class="text-xs text-slate-700 leading-relaxed">${s.content}</p>
-              </div>
-            `).join("")}
 
-            <h3 class="text-sm font-bold uppercase text-slate-500 mt-4">Interactive Learner Activity</h3>
-            <div class="p-3 bg-blue-50 border border-blue-100 rounded-lg text-xs">
-              <h4 class="font-bold text-blue-900 mb-1">${c.interactive_activity.title} (${c.interactive_activity.duration_minutes} mins)</h4>
-              <p class="text-blue-800 mb-2">${c.interactive_activity.instructions}</p>
-              <p class="font-semibold text-blue-900">Deliverable: ${c.interactive_activity.deliverable}</p>
+          <div class="space-y-6">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-dark-muted">Core Instructional Modules (45 Minutes)</h3>
+            <div class="space-y-3">
+              ${c.sections.map(s => `
+                <div class="p-4 rounded-xl border border-dark-border bg-dark-bg/60 space-y-1.5">
+                  <div class="flex justify-between items-center font-bold text-xs text-white">
+                    <span>${s.title}</span>
+                    <span class="font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">${s.duration_minutes} min</span>
+                  </div>
+                  <p class="text-xs text-slate-300 leading-relaxed">${s.content}</p>
+                </div>
+              `).join("")}
             </div>
 
-            <h3 class="text-sm font-bold uppercase text-slate-500 mt-4">Formative Assessment</h3>
-            ${c.knowledge_checks.map((q, idx) => `
-              <div class="p-3 border border-slate-200 rounded-lg text-xs bg-slate-50">
-                <p class="font-bold text-slate-900 mb-1">Q${idx+1}: ${q.question}</p>
-                <p class="text-emerald-700 font-semibold mb-1">Answer: ${q.correct_answer}</p>
-                <p class="text-slate-600 italic">${q.explanation}</p>
-              </div>
-            `).join("")}
+            <h3 class="text-xs font-bold uppercase tracking-wider text-dark-muted mt-6">Interactive Learner Task</h3>
+            <div class="p-4 bg-amber-500/10 border border-amber-500/20 rounded-xl text-xs space-y-1.5">
+              <h4 class="font-bold text-amber-300 text-sm">${c.interactive_activity.title} (${c.interactive_activity.duration_minutes} mins)</h4>
+              <p class="text-slate-200">${c.interactive_activity.instructions}</p>
+              <div class="pt-1 text-amber-200 font-semibold font-mono"><i class="fa-solid fa-flag-checkered mr-1"></i> Deliverable: ${c.interactive_activity.deliverable}</div>
+            </div>
+
+            <h3 class="text-xs font-bold uppercase tracking-wider text-dark-muted mt-6">Formative Assessment & Answer Key</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              ${c.knowledge_checks.map((q, idx) => `
+                <div class="p-4 border border-dark-border rounded-xl text-xs bg-dark-bg/60 space-y-2">
+                  <p class="font-bold text-white">Q${idx+1}: ${q.question}</p>
+                  <p class="text-emerald-400 font-semibold font-mono bg-emerald-500/10 p-2 rounded border border-emerald-500/20">Answer: ${q.correct_answer}</p>
+                  <p class="text-slate-400 italic">${q.explanation}</p>
+                </div>
+              `).join("")}
+            </div>
+
+            <h3 class="text-xs font-bold uppercase tracking-wider text-dark-muted mt-6">Bibliographic Standards</h3>
+            <div class="space-y-1.5 text-xs">
+              ${c.references.map(r => `
+                <div class="p-2.5 rounded-lg bg-dark-bg border border-dark-border flex justify-between items-center">
+                  <div>
+                    <span class="font-mono font-bold text-indigo-400">[${r.source_id}]</span>
+                    <span class="font-semibold text-white ml-1">${r.title}</span>
+                  </div>
+                  ${r.url_or_identifier ? `<a href="${r.url_or_identifier}" target="_blank" class="text-brand-400 hover:underline font-mono text-[11px]">Link <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i></a>` : ''}
+                </div>
+              `).join("")}
+            </div>
           </div>
         `;
       } catch (e) {
@@ -745,9 +1082,8 @@
       try {
         const res = await fetch(`${API_BASE}/lessons/${currentLessonId}/export`, { method: "POST" });
         if (res.ok) {
-          const data = await res.json();
           window.location.href = `${API_BASE}/lessons/${currentLessonId}/export/download`;
-          showToast("Export markdown generated and download started!", "success");
+          showToast("Export markdown package generated and download started!", "success");
         }
       } catch (e) {
         showToast("Export failed", "error");
@@ -776,7 +1112,7 @@
         if (res.ok) {
           const newLesson = await res.json();
           closeCreateModal();
-          showToast("Lesson draft created!", "success");
+          showToast("Lesson draft created successfully!", "success");
           currentLessonId = newLesson.id;
           await fetchLessons();
         } else {
@@ -790,7 +1126,14 @@
     }
 
     // Initialize on load
-    window.addEventListener("DOMContentLoaded", fetchLessons);
+    window.addEventListener("DOMContentLoaded", () => {
+      fetchLessons();
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'light') {
+        document.documentElement.classList.remove('dark');
+        document.getElementById('theme-icon').className = 'fa-solid fa-sun';
+      }
+    });
   </script>
 </body>
 </html>
