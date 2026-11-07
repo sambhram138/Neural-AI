@@ -141,25 +141,13 @@
           <i class="fa-solid fa-brain text-sm"></i>
         </div>
         <div>
-          <div class="flex items-center gap-2">
-            <span class="text-base font-extrabold tracking-tight text-white">Neural <span class="bg-gradient-to-r from-white via-purple-200 to-purple-400 bg-clip-text text-transparent">AI</span></span>
-            <span class="text-[10px] font-mono px-2.5 py-0.5 rounded-full bg-purple-950/80 text-purple-300 border border-purple-700/50 font-semibold tracking-wider">LESSON ENGINE</span>
-          </div>
-          <p class="text-[11px] text-dark-muted font-medium">45-Minute Curriculum Synthesis & Dual QC</p>
+          <span class="text-base font-extrabold tracking-tight text-white">Neural <span class="bg-gradient-to-r from-white via-purple-200 to-purple-400 bg-clip-text text-transparent">AI</span></span>
+          <p class="text-[11px] text-dark-muted font-medium">Curriculum Research Synthesizer & Dual QC Engine</p>
         </div>
       </div>
 
       <!-- Quick Switcher, Stats & Actions -->
       <div class="flex items-center space-x-3">
-        <!-- Live Backend Status Pill -->
-        <div id="connection-pill" class="hidden sm:flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-mono bg-purple-950/60 text-purple-300 border border-purple-800/60">
-          <span class="relative flex h-2 w-2">
-            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
-            <span class="relative inline-flex rounded-full h-2 w-2 bg-purple-500"></span>
-          </span>
-          <span class="font-semibold">FastAPI Live</span>
-        </div>
-
         <!-- New Lesson Pill Button -->
         <button onclick="openCreateModal()" class="btn-pill-primary px-5 py-2 rounded-full text-xs font-semibold flex items-center gap-2">
           <i class="fa-solid fa-plus text-xs"></i> New Lesson Draft
@@ -199,12 +187,12 @@
   <!-- Main Content Area -->
   <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-4 z-10 space-y-6">
 
-    <!-- Active Lesson Dashboard Card -->
+    <!-- Active Lesson Workspace Selector -->
     <div class="glass-panel rounded-2xl p-5 border border-dark-border shadow-2xl">
-      <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         
-        <!-- Lesson Dropdown & Meta -->
-        <div class="space-y-1.5 w-full lg:w-auto">
+        <!-- Lesson Dropdown -->
+        <div class="space-y-1.5 w-full">
           <div class="flex items-center gap-2 text-xs text-dark-muted font-medium">
             <i class="fa-solid fa-folder-open text-purple-400"></i> Active Curriculum Workspace:
           </div>
@@ -218,83 +206,6 @@
           </div>
         </div>
 
-        <!-- Badges & Duration Status -->
-        <div class="flex flex-wrap items-center gap-2.5 text-xs">
-          <div id="badge-status" class="px-3.5 py-1.5 rounded-full bg-purple-950/70 text-purple-300 border border-purple-800/60 font-mono font-semibold flex items-center gap-1.5">
-            <i class="fa-solid fa-circle-notch fa-spin text-[10px]"></i> STATUS: DRAFT
-          </div>
-          <div id="badge-version" class="px-3.5 py-1.5 rounded-full bg-purple-950/50 text-purple-300 border border-purple-800/50 font-mono font-semibold">
-            VERSION: v1
-          </div>
-          <div class="px-3.5 py-1.5 rounded-full bg-purple-900/40 text-purple-200 border border-purple-700/50 font-semibold flex items-center gap-1.5">
-            <i class="fa-regular fa-clock text-purple-400"></i> 45-Minute Budget
-          </div>
-        </div>
-
-      </div>
-
-      <!-- 6-Stage Visual Pipeline Stepper -->
-      <div class="mt-6 pt-5 border-t border-dark-border">
-        <div class="text-[11px] font-bold uppercase tracking-wider text-dark-muted mb-3 flex items-center gap-1.5">
-          <i class="fa-solid fa-bars-staggered text-purple-400"></i> Autonomous Pipeline Progress
-        </div>
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 text-xs">
-          <div id="step-intake" class="p-2.5 rounded-xl border border-purple-600/50 bg-purple-950/50 text-purple-200 flex items-center gap-2">
-            <i class="fa-solid fa-circle-check text-purple-400"></i>
-            <span class="font-medium truncate">1. Intake</span>
-          </div>
-          <div id="step-research" class="p-2.5 rounded-xl border border-dark-border bg-dark-card text-dark-muted flex items-center gap-2">
-            <i class="fa-solid fa-globe text-purple-400"></i>
-            <span class="font-medium truncate">2. Research</span>
-          </div>
-          <div id="step-synthesis" class="p-2.5 rounded-xl border border-dark-border bg-dark-card text-dark-muted flex items-center gap-2">
-            <i class="fa-solid fa-wand-magic-sparkles text-purple-400"></i>
-            <span class="font-medium truncate">3. 45m Synthesis</span>
-          </div>
-          <div id="step-qc1" class="p-2.5 rounded-xl border border-dark-border bg-dark-card text-dark-muted flex items-center gap-2">
-            <i class="fa-solid fa-flask text-purple-400"></i>
-            <span class="font-medium truncate">4. QC 1: Factual</span>
-          </div>
-          <div id="step-qc2" class="p-2.5 rounded-xl border border-dark-border bg-dark-card text-dark-muted flex items-center gap-2">
-            <i class="fa-solid fa-chalkboard-user text-purple-400"></i>
-            <span class="font-medium truncate">5. QC 2: Pedagogy</span>
-          </div>
-          <div id="step-export" class="p-2.5 rounded-xl border border-dark-border bg-dark-card text-dark-muted flex items-center gap-2">
-            <i class="fa-solid fa-file-export text-purple-400"></i>
-            <span class="font-medium truncate">6. Export Ready</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- 45-Minute Monochromatic Purple Duration Bar -->
-      <div class="mt-5 pt-4 border-t border-dark-border">
-        <div class="flex justify-between items-center text-xs mb-2">
-          <span class="font-semibold text-purple-200 flex items-center gap-1.5">
-            <i class="fa-solid fa-chart-simple text-purple-400"></i> 45-Minute Teaching Budget Distribution
-          </span>
-          <span id="pacing-track-sum" class="font-mono font-bold text-purple-300">45 / 45 Minutes Allocated (100% Balanced)</span>
-        </div>
-        
-        <!-- Multi-tone Purple Duration Track -->
-        <div class="w-full h-3 rounded-full bg-dark-bg border border-dark-border flex overflow-hidden p-0.5 gap-0.5 shadow-inner">
-          <div id="bar-intro" class="bg-purple-950 h-full rounded-sm transition-all" style="width: 6.6%;" title="Introduction (3m)"></div>
-          <div id="bar-core" class="bg-purple-800 h-full rounded-sm transition-all" style="width: 26.6%;" title="Core Explanations (12m)"></div>
-          <div id="bar-examples" class="bg-purple-700 h-full rounded-sm transition-all" style="width: 17.7%;" title="Worked Examples (8m)"></div>
-          <div id="bar-app" class="bg-purple-600 h-full rounded-sm transition-all" style="width: 15.5%;" title="Practical Application (7m)"></div>
-          <div id="bar-activity" class="bg-purple-500 h-full rounded-sm transition-all" style="width: 11.1%;" title="Interactive Activity (5m)"></div>
-          <div id="bar-kc" class="bg-purple-400 h-full rounded-sm transition-all" style="width: 15.5%;" title="Assessment Checks (7m)"></div>
-          <div id="bar-summary" class="bg-purple-300 h-full rounded-sm transition-all" style="width: 6.6%;" title="Summary (3m)"></div>
-        </div>
-        
-        <div class="flex flex-wrap justify-between text-[10px] text-dark-muted font-mono mt-1.5">
-          <span><span class="inline-block w-2 h-2 rounded-full bg-purple-950 mr-1"></span>Intro 3m</span>
-          <span><span class="inline-block w-2 h-2 rounded-full bg-purple-800 mr-1"></span>Concepts 12m</span>
-          <span><span class="inline-block w-2 h-2 rounded-full bg-purple-700 mr-1"></span>Examples 8m</span>
-          <span><span class="inline-block w-2 h-2 rounded-full bg-purple-600 mr-1"></span>Application 7m</span>
-          <span><span class="inline-block w-2 h-2 rounded-full bg-purple-500 mr-1"></span>Activity 5m</span>
-          <span><span class="inline-block w-2 h-2 rounded-full bg-purple-400 mr-1"></span>Assessment 7m</span>
-          <span><span class="inline-block w-2 h-2 rounded-full bg-purple-300 mr-1"></span>Summary 3m</span>
-        </div>
       </div>
     </div>
 
@@ -653,12 +564,15 @@
         const res = await fetch(`${API_BASE}/lessons/${currentLessonId}`);
         currentLessonData = await res.json();
         
-        // Update Meta Badges
+        // Update Meta Badges if present
         const statusUpper = currentLessonData.status.toUpperCase();
-        document.getElementById("badge-status").innerText = `STATUS: ${statusUpper}`;
+        const badgeStatus = document.getElementById("badge-status");
+        if (badgeStatus) badgeStatus.innerText = `STATUS: ${statusUpper}`;
         const verNum = currentLessonData.current_version ? currentLessonData.current_version.version_number : 1;
-        document.getElementById("badge-version").innerText = `VERSION: v${verNum}`;
-        document.getElementById("tab-version-badge").innerText = `v${verNum}`;
+        const badgeVer = document.getElementById("badge-version");
+        if (badgeVer) badgeVer.innerText = `VERSION: v${verNum}`;
+        const tabVer = document.getElementById("tab-version-badge");
+        if (tabVer) tabVer.innerText = `v${verNum}`;
 
         // Update Stepper
         updateStepper(currentLessonData.status);
@@ -693,6 +607,7 @@
 
       steps.forEach((s, idx) => {
         const el = document.getElementById('step-' + s);
+        if (!el) return;
         if (idx < activeIdx) {
           el.className = 'p-2.5 rounded-xl border border-purple-600/40 bg-purple-950/40 text-purple-200 flex items-center gap-2';
           el.querySelector('i').className = 'fa-solid fa-circle-check text-purple-400';
@@ -861,16 +776,21 @@
       const fullTotal = total + 5 + 7; // +5 activity + 7 knowledge check
       const pill = document.getElementById("time-checker-pill");
       const countSpan = document.getElementById("editor-total-duration");
-      countSpan.innerText = fullTotal;
+      if (countSpan) countSpan.innerText = fullTotal;
 
+      const pacingTrack = document.getElementById("pacing-track-sum");
       if (fullTotal === 45) {
-        pill.className = "text-xs font-mono px-3.5 py-1.5 rounded-full bg-purple-950/80 text-purple-300 border border-purple-800/60 font-bold flex items-center gap-2";
-        document.getElementById("pacing-track-sum").innerText = "45 / 45 Minutes Allocated (100% Balanced)";
-        document.getElementById("pacing-track-sum").className = "font-mono font-bold text-purple-300";
+        if (pill) pill.className = "text-xs font-mono px-3.5 py-1.5 rounded-full bg-purple-950/80 text-purple-300 border border-purple-800/60 font-bold flex items-center gap-2";
+        if (pacingTrack) {
+          pacingTrack.innerText = "45 / 45 Minutes Allocated (100% Balanced)";
+          pacingTrack.className = "font-mono font-bold text-purple-300";
+        }
       } else {
-        pill.className = "text-xs font-mono px-3.5 py-1.5 rounded-full bg-purple-900 text-purple-100 border border-purple-500 font-bold flex items-center gap-2";
-        document.getElementById("pacing-track-sum").innerText = `${fullTotal} / 45 Minutes (Pacing Mismatch)`;
-        document.getElementById("pacing-track-sum").className = "font-mono font-bold text-purple-400";
+        if (pill) pill.className = "text-xs font-mono px-3.5 py-1.5 rounded-full bg-purple-900 text-purple-100 border border-purple-500 font-bold flex items-center gap-2";
+        if (pacingTrack) {
+          pacingTrack.innerText = `${fullTotal} / 45 Minutes (Pacing Mismatch)`;
+          pacingTrack.className = "font-mono font-bold text-purple-400";
+        }
       }
     }
 
